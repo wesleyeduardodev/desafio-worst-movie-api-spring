@@ -8,14 +8,20 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "producers")
+@Table(name = "worst_movie")
 @Entity
-public class Producers extends PanacheEntityBase {
+public class WorstMovie extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name="yea", nullable = false)
+    private Integer year;
+
+    @Column(name="title", nullable = false)
+    private String title;
+
+    @Column(name="winner")
+    private boolean winner;
 }

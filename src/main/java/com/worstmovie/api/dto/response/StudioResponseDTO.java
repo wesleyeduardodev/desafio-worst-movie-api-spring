@@ -1,6 +1,5 @@
-package com.worstmovie.api.dto.request;
+package com.worstmovie.api.dto.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -11,18 +10,24 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(
-        description = "Object used to map the creation data of a new producer.",
-        name = "ProducersRequestDTO",
+        description = "Object used to map studio datas.",
+        name = "StudioResponseDTO",
         type = SchemaType.OBJECT
 )
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ProducersRequestDTO {
+public class StudioResponseDTO {
 
     @Schema(
-            description = "Producer name.",
+            description = "Studio code.",
+            implementation = Long.class,
+            type = SchemaType.NUMBER
+    )
+    private Long id;
+
+    @Schema(
+            description = "Studio name.",
             implementation = String.class,
             type = SchemaType.STRING
     )
-    @NotBlank(message = "Producer name is required.")
     private String name;
 }

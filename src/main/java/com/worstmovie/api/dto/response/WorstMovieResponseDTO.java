@@ -10,24 +10,38 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(
-        description = "Object used to map producer data.s",
-        name = "ProducersResponseDTO",
+        description = "Object used to map WorstMovie datas.",
+        name = "WorstMovieResponseDTO",
         type = SchemaType.OBJECT
 )
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ProducersResponseDTO {
+public class WorstMovieResponseDTO {
 
     @Schema(
-            description = "Producer code.",
+            description = "WorstMovie code.",
             implementation = Long.class,
             type = SchemaType.NUMBER
     )
     private Long id;
 
     @Schema(
-            description = "Producer name.",
+            description = "WorstMovie year.",
+            implementation = Integer.class,
+            type = SchemaType.INTEGER
+    )
+    private Integer year;
+
+    @Schema(
+            description = "WorstMovie title.",
             implementation = String.class,
             type = SchemaType.STRING
     )
-    private String name;
+    private String title;
+
+    @Schema(
+            description = "WorstMovie winner.",
+            implementation = Boolean.class,
+            type = SchemaType.BOOLEAN
+    )
+    private boolean winner;
 }

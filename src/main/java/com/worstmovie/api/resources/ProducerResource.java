@@ -1,5 +1,5 @@
 package com.worstmovie.api.resources;
-import com.worstmovie.api.dto.request.ProducersRequestDTO;
+import com.worstmovie.api.dto.request.ProducerRequestDTO;
 import com.worstmovie.api.service.ProducersService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -15,7 +15,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Tag(name = "Producer Resources.", description = "Routes used to manipulate producer data.")
-public class ProducersResource {
+public class ProducerResource {
 
     @Inject
     ProducersService producersService;
@@ -31,7 +31,7 @@ public class ProducersResource {
             content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(
-                            ref = "ProducersResponseDTO"
+                            ref = "ProducerResponseDTO"
                     )
             ),
             description = "Request executed successfully. Producer data obtained."
@@ -53,17 +53,17 @@ public class ProducersResource {
             content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(
-                            ref = "ProducersRequestDTO"
+                            ref = "ProducerRequestDTO"
                     )
             ),
             description = "Request executed successfully. Created producer."
     )
     @POST
     @Path("producers")
-    public Response saveProducers(ProducersRequestDTO producersRequestDTO) {
+    public Response saveProducers(ProducerRequestDTO producersRequestDTO) {
         Response response;
         try {
-            producersService.saveProducer(producersRequestDTO);
+            producersService.saveProducer(producersRequestDTO.getName());
             response = Response.ok().build();
         } catch (Exception e) {
             response = Response.serverError().build();
