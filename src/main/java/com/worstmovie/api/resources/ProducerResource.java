@@ -14,7 +14,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 @Path("/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Tag(name = "Producer Resources.", description = "Routes used to manipulate producer data.")
+@Tag(name = "Producer Resources", description = "Routes used to manipulate producer data.")
 public class ProducerResource {
 
     @Inject

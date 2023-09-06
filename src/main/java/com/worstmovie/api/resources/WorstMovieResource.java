@@ -16,7 +16,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 @Path("/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Tag(name = "WorstMovie Resources.", description = "Routes used to manipulate WorstMovie data.")
+@Tag(name = "WorstMovie Resources", description = "Routes used to manipulate WorstMovie data.")
 public class WorstMovieResource {
 
     @Inject

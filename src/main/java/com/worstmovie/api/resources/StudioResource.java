@@ -13,7 +13,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 @Path("/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Tag(name = "Studio Resources.", description = "Routes used to manipulate studio data.")
+@Tag(name = "Studio Resources", description = "Routes used to manipulate studio data.")
 public class StudioResource {
 
     @Inject
