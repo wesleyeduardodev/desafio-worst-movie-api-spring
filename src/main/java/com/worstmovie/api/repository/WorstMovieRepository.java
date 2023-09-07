@@ -1,8 +1,8 @@
 package com.worstmovie.api.repository;
 import com.worstmovie.api.model.WorstMovie;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import jakarta.enterprise.context.ApplicationScoped;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-@ApplicationScoped
-public class WorstMovieRepository implements PanacheRepository<WorstMovie> {
+@Repository
+public interface WorstMovieRepository extends CrudRepository<WorstMovie, Long> {
 }

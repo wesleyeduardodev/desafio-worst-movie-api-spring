@@ -1,5 +1,6 @@
 package com.worstmovie.api.resources;
 import com.worstmovie.api.dto.request.ProducerRequestDTO;
+import com.worstmovie.api.model.Producer;
 import com.worstmovie.api.service.ProducersService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -63,8 +64,8 @@ public class ProducerResource {
     public Response saveProducers(ProducerRequestDTO producersRequestDTO) {
         Response response;
         try {
-            producersService.saveProducer(producersRequestDTO.getName());
-            response = Response.ok().build();
+            Producer producer = producersService.saveProducer(producersRequestDTO.getName());
+            response = Response.ok(producer).build();
         } catch (Exception e) {
             response = Response.serverError().build();
         }

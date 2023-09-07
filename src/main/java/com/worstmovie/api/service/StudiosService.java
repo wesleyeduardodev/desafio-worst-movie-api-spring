@@ -1,31 +1,36 @@
 package com.worstmovie.api.service;
 import com.worstmovie.api.dto.response.StudioResponseDTO;
 import com.worstmovie.api.model.Studio;
+import com.worstmovie.api.repository.StudiosRepository;
 import com.worstmovie.api.utils.CSVMovieListUtils;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.transaction.Transactional;
+import jakarta.inject.Inject;
 import org.apache.commons.csv.CSVRecord;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class StudiosService {
 
+    @Inject
+    StudiosRepository studiosRepository;
+
     public List<Studio> findAllStudios() {
         return Studio.listAll();
     }
 
-    @Transactional
-    public void saveStudios(String name) {
-        Studio.persist(Studio.builder()
+    public Studio saveStudio(String name) {
+        return studiosRepository.save(Studio
+                .builder()
                 .name(name)
                 .build());
     }
 
-    @Transactional
-    public void saveAllStudios(List<Studio> studios) {
-        Studio.persist(studios);
+    public Studio saveOrReturnStudio(String name) {
+        Optional<Studio> studio = studiosRepository.findByName(name);
+        return studio.orElseGet(() -> studiosRepository.save(Studio.builder().name(name).build()));
     }
 
     public List<StudioResponseDTO> studiosEntityToStudiosResponseDTO(List<Studio> studios) {

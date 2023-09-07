@@ -1,19 +1,10 @@
 package com.worstmovie.api.service;
-import com.worstmovie.api.model.Producer;
-import com.worstmovie.api.model.Studio;
-import com.worstmovie.api.model.WorstMovie;
+import com.worstmovie.api.model.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVRecord;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Slf4j
@@ -28,44 +19,38 @@ public class CSVMovieListImporterService {
     @Inject
     WorstMovieService worstMovieService;
 
+    @Inject
+    WorstMovieProducersService worstMovieProducersService;
+
+    @Inject
+    WorstMovieStudioService worstMovieStudioService;
+
     public void csvMovieListImporter(Iterable<CSVRecord> csvMovieListRecords) {
-        List<Producer> allProducersForSave = new ArrayList<>();
-        List<Studio> allStudiosForSave = new ArrayList<>();
-        List<WorstMovie> allWorstMovieForSave = new ArrayList<>();
         for (CSVRecord csvMovieRecord : csvMovieListRecords) {
+            WorstMovie worstMovie = worstMovieService.returnWorstMovieFromCSVRecord(csvMovieRecord);
             List<Producer> producers = producersService.returnProducersFromCSVRecord(csvMovieRecord);
             List<Studio> studios = studiosService.returnStudiosFromCSVRecord(csvMovieRecord);
-            WorstMovie worstMovie = worstMovieService.returnWorstMovieFromCSVRecord(csvMovieRecord);
-            allProducersForSave.addAll(producers);
-            allStudiosForSave.addAll(studios);
-            allWorstMovieForSave.add(worstMovie);
+            saveRecords(producers, studios, worstMovie);
         }
-        allProducersForSave = returnProducersWithoutRepeatedNames(allProducersForSave);
-        allStudiosForSave = returnStudiosWithoutRepeatedNames(allStudiosForSave);
-        saveRecords(allProducersForSave, allStudiosForSave, allWorstMovieForSave);
     }
 
-    @Transactional
-    void saveRecords(List<Producer> producers, List<Studio> studios, List<WorstMovie> worstMovies) {
-        producersService.saveAllProducer(producers);
-        studiosService.saveAllStudios(studios);
-        worstMovieService.saveAllWorstMovie(worstMovies);
+    private void saveRecords(List<Producer> producers, List<Studio> studios, WorstMovie worstMovie) {
+        WorstMovie worstMovieSaved = worstMovieService.saveWorstMovie(worstMovie);
+        saveProducers(producers, worstMovieSaved);
+        saveStudios(studios, worstMovieSaved);
     }
 
-    private List<Producer> returnProducersWithoutRepeatedNames(List<Producer> allProducersForSave) {
-        return allProducersForSave.stream()
-                .filter(distinctByKey(Producer::getName))
-                .collect(Collectors.toList());
+    private void saveProducers(List<Producer> producers, WorstMovie worstMovie) {
+        producers.forEach(producer -> {
+            Producer producerSaved = producersService.saveOrReturnProducer(producer.getName());
+            worstMovieProducersService.saveWorstMovieProducers(producerSaved, worstMovie);
+        });
     }
 
-    private List<Studio> returnStudiosWithoutRepeatedNames(List<Studio> allStudiosForSave) {
-        return allStudiosForSave.stream()
-                .filter(distinctByKey(Studio::getName))
-                .collect(Collectors.toList());
-    }
-
-    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
-        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    private void saveStudios(List<Studio> studios, WorstMovie worstMovie) {
+        studios.forEach(studio -> {
+            Studio studioSaved = studiosService.saveOrReturnStudio(studio.getName());
+            worstMovieStudioService.saveWorstMovieStudio(studioSaved, worstMovie);
+        });
     }
 }

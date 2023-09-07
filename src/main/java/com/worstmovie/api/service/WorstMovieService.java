@@ -1,9 +1,10 @@
 package com.worstmovie.api.service;
 import com.worstmovie.api.dto.response.WorstMovieResponseDTO;
 import com.worstmovie.api.model.WorstMovie;
+import com.worstmovie.api.repository.WorstMovieRepository;
 import com.worstmovie.api.utils.CSVMovieListUtils;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.transaction.Transactional;
+import jakarta.inject.Inject;
 import org.apache.commons.csv.CSVRecord;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,22 +12,15 @@ import java.util.List;
 @ApplicationScoped
 public class WorstMovieService {
 
+    @Inject
+    WorstMovieRepository worstMovieRepository;
+
     public List<WorstMovie> findAllWorstMovies() {
         return WorstMovie.listAll();
     }
 
-    @Transactional
-    public void saveWorstMovie(Integer year, String title, boolean winner) {
-        WorstMovie.persist(WorstMovie.builder()
-                .year(year)
-                .title(title)
-                .winner(winner)
-                .build());
-    }
-
-    @Transactional
-    public void saveAllWorstMovie(List<WorstMovie> worstMovies) {
-        WorstMovie.persist(worstMovies);
+    public WorstMovie saveWorstMovie(WorstMovie worstMovie) {
+        return worstMovieRepository.save(worstMovie);
     }
 
     public List<WorstMovieResponseDTO> worstMoviesEntityToWorstMovieResponseDTO(List<WorstMovie> worstMovies) {
