@@ -20,19 +20,15 @@ public class AwardsRangeService {
     private static final Integer RANGE_DELIMITER_AWARDS = 2;
 
     public MaxMinAwardsRangeDTO findAwardsRangeProducer() {
-
         List<WorstMovieProducerDTO> worstMovieProducers = awardsRangeRepository.findWorstMovieProducerDTO();
         List<RankingProducerDTO> rankingWorstMovieProducers = returnRankingProducersDTO(worstMovieProducers);
         List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges = returnRankingProducersWithCalculatedPremiumRanges(rankingWorstMovieProducers);
-
-        Integer minInterval = returnMinInterval(rankingProducersWithCalculatedPremiumRanges);
-        Integer maxInterval = returnMaxInterval(rankingProducersWithCalculatedPremiumRanges);
-
-        List<RankingProducerDTO> minAwardsProducers = rankingProducersWithCalculatedPremiumRanges.stream()
-                .filter(i -> i.getInterval().equals(minInterval)).toList();
-        List<RankingProducerDTO> maxAwardsProducers = rankingProducersWithCalculatedPremiumRanges.stream()
-                .filter(i -> i.getInterval().equals(maxInterval)).toList();
-
+        List<RankingProducerDTO> minAwardsProducers = new ArrayList<>();
+        List<RankingProducerDTO> maxAwardsProducers = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(rankingProducersWithCalculatedPremiumRanges)) {
+            minAwardsProducers = returnMinAwardsProduces(rankingProducersWithCalculatedPremiumRanges);
+            maxAwardsProducers = returnMaxAwardsProduces(rankingProducersWithCalculatedPremiumRanges);
+        }
         return MaxMinAwardsRangeDTO
                 .builder()
                 .min(mountAwardsRangeDTO(minAwardsProducers))
@@ -40,44 +36,48 @@ public class AwardsRangeService {
                 .build();
     }
 
-    private Integer returnMaxInterval(List<RankingProducerDTO> rankingProducerNormalizados) {
-        return rankingProducerNormalizados.stream()
-                .max(Comparator.comparing(RankingProducerDTO::getInterval))
-                .get().getInterval();
+    private List<RankingProducerDTO> returnMaxAwardsProduces(List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges) {
+        Integer maxInterval = returnMaxInterval(rankingProducersWithCalculatedPremiumRanges);
+        return rankingProducersWithCalculatedPremiumRanges.stream()
+                .filter(i -> i.getInterval().equals(maxInterval)).toList();
     }
 
-    private Integer returnMinInterval(List<RankingProducerDTO> rankingProducerNormalizados) {
-        return rankingProducerNormalizados.stream()
-                .min(Comparator.comparing(RankingProducerDTO::getInterval))
-                .get().getInterval();
+    private List<RankingProducerDTO> returnMinAwardsProduces(List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges) {
+        Integer minInterval = returnMinInterval(rankingProducersWithCalculatedPremiumRanges);
+        return rankingProducersWithCalculatedPremiumRanges.stream()
+                .filter(i -> i.getInterval().equals(minInterval)).toList();
     }
 
     private List<RankingProducerDTO> returnRankingProducersWithCalculatedPremiumRanges(List<RankingProducerDTO> rankingProducerDTOS) {
-        List<RankingProducerDTO> rankingProducerNormalizados = new ArrayList<>();
+        List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges = new ArrayList<>();
         rankingProducerDTOS.forEach(rankingProducer -> {
             if (CollectionUtils.size(rankingProducer.getYears()) == RANGE_DELIMITER_AWARDS) {
                 rankingProducer.setInterval(returnInterval(rankingProducer.getYears()));
-                rankingProducerNormalizados.add(rankingProducer);
+                rankingProducersWithCalculatedPremiumRanges.add(rankingProducer);
             } else if (CollectionUtils.size(rankingProducer.getYears()) > RANGE_DELIMITER_AWARDS) {
-                Iterator<Integer> years = rankingProducer.getYears().iterator();
-                Integer previousWin = null;
-                Integer followingWin;
-                while (years.hasNext()) {
-                    followingWin = years.next();
-                    if (Objects.nonNull(previousWin)) {
-                        RankingProducerDTO rankingProducerDTO = RankingProducerDTO
-                                .builder()
-                                .name(rankingProducer.getName())
-                                .years(Arrays.asList(previousWin, followingWin))
-                                .build();
-                        rankingProducerDTO.setInterval(returnInterval(rankingProducerDTO.getYears()));
-                        rankingProducerNormalizados.add(rankingProducerDTO);
-                    }
-                    previousWin = followingWin;
-                }
+                resolveRankingWithMoreThanTwoConsecutiveAward(rankingProducersWithCalculatedPremiumRanges, rankingProducer);
             }
         });
-        return rankingProducerNormalizados;
+        return rankingProducersWithCalculatedPremiumRanges;
+    }
+
+    private void resolveRankingWithMoreThanTwoConsecutiveAward(List<RankingProducerDTO> rankingProducerNormalizados, RankingProducerDTO rankingProducer) {
+        Iterator<Integer> years = rankingProducer.getYears().iterator();
+        Integer previousWin = null;
+        Integer followingWin;
+        while (years.hasNext()) {
+            followingWin = years.next();
+            if (Objects.nonNull(previousWin)) {
+                RankingProducerDTO rankingProducerDTO = RankingProducerDTO
+                        .builder()
+                        .name(rankingProducer.getName())
+                        .years(Arrays.asList(previousWin, followingWin))
+                        .build();
+                rankingProducerDTO.setInterval(returnInterval(rankingProducerDTO.getYears()));
+                rankingProducerNormalizados.add(rankingProducerDTO);
+            }
+            previousWin = followingWin;
+        }
     }
 
     private List<RankingProducerDTO> returnRankingProducersDTO(List<WorstMovieProducerDTO> worstMovieProducerDTOS) {
@@ -107,6 +107,18 @@ public class AwardsRangeService {
                 .interval(minRankingProduce.getInterval())
                 .build()));
         return minAwardsRange;
+    }
+
+    private Integer returnMinInterval(List<RankingProducerDTO> rankingProducerNormalizados) {
+        return rankingProducerNormalizados.stream()
+                .min(Comparator.comparing(RankingProducerDTO::getInterval))
+                .get().getInterval();
+    }
+
+    private Integer returnMaxInterval(List<RankingProducerDTO> rankingProducerNormalizados) {
+        return rankingProducerNormalizados.stream()
+                .max(Comparator.comparing(RankingProducerDTO::getInterval))
+                .get().getInterval();
     }
 
     private Integer returnInterval(List<Integer> years) {

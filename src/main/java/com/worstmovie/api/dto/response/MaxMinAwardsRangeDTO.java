@@ -15,7 +15,6 @@ import java.util.List;
         name = "MaxMinAwardsRangeDTO",
         type = SchemaType.OBJECT
 )
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class MaxMinAwardsRangeDTO {
     private List<AwardsRangeDTO> min;
     private List<AwardsRangeDTO> max;
