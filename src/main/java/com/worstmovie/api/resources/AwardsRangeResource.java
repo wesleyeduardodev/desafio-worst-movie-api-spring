@@ -1,5 +1,5 @@
 package com.worstmovie.api.resources;
-import com.worstmovie.api.service.WorstMovieService;
+import com.worstmovie.api.service.AwardsRangeService;;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -12,20 +12,21 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import java.util.ArrayList;
 
-@Path("/v1")
+@Path("/v1/awardsrange")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Tag(name = "WorstMovie Resources", description = "Routes used to manipulate WorstMovie data.")
-public class WorstMovieResource {
+@Tag(name = "Awards Range Resource ", description = "Routes used to return Awards Range.")
+public class AwardsRangeResource {
 
     @Inject
-    WorstMovieService worstMovieService;
+    AwardsRangeService awardsRangeService;
 
     @Operation(
-            description = "Return all WorstMovies.",
-            operationId = "worstMovieResource.findAllWorstMovies",
-            summary = "Return all WorstMovies."
+            description = "Return Interval Awards.",
+            operationId = "awardsRangeResource.findAwardsRangeProducer",
+            summary = "Return Interval Awards."
     )
     @APIResponse(
             name = "OK",
@@ -33,14 +34,20 @@ public class WorstMovieResource {
             content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(
-                            ref = "WorstMovieResponseDTO"
+                            ref = "MaxMinAwardsRangeDTO"
                     )
             ),
-            description = "Request executed successfully. WorstMovie data obtained."
+            description = "Request executed successfully."
     )
     @GET
-    @Path("worstmovies")
-    public Response findAllWorstMovies() {
-        return Response.ok(worstMovieService.worstMoviesEntityToWorstMovieResponseDTO(worstMovieService.findAllWorstMovies())).build();
+    @Path("/producers")
+    public Response findAwardsRangeProducer() {
+        return Response.ok(awardsRangeService.findAwardsRangeProducer()).build();
+    }
+
+    @GET
+    @Path("/studios")
+    public Response findAwardsRangeStudios() {
+        return Response.ok(new ArrayList<>()).build();
     }
 }
