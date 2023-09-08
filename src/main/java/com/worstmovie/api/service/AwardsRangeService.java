@@ -8,6 +8,7 @@ import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Slf4j
@@ -37,7 +38,7 @@ public class AwardsRangeService {
         if (CollectionUtils.isNotEmpty(rankingProducersWithCalculatedPremiumRanges)) {
             Integer maxInterval = returnMaxInterval(rankingProducersWithCalculatedPremiumRanges);
             return rankingProducersWithCalculatedPremiumRanges.stream()
-                    .filter(i -> i.getInterval().equals(maxInterval)).toList();
+                    .filter(i -> i.getInterval().equals(maxInterval)).collect(Collectors.toList());
         } else {
             return new ArrayList<>();
         }
@@ -47,7 +48,7 @@ public class AwardsRangeService {
         if (CollectionUtils.isNotEmpty(rankingProducersWithCalculatedPremiumRanges)) {
             Integer minInterval = returnMinInterval(rankingProducersWithCalculatedPremiumRanges);
             return rankingProducersWithCalculatedPremiumRanges.stream()
-                    .filter(i -> i.getInterval().equals(minInterval)).toList();
+                    .filter(i -> i.getInterval().equals(minInterval)).collect(Collectors.toList());
         } else {
             return new ArrayList<>();
         }
