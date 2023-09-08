@@ -1,5 +1,4 @@
-package com.worstmovie.api.dto.response;
-import com.fasterxml.jackson.annotation.JsonInclude;
+package com.worstmovie.api.dto.reesponse;
 import lombok.*;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;

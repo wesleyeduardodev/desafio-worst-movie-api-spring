@@ -1,6 +1,6 @@
 package com.worstmovie.api;
-import com.worstmovie.api.dto.response.AwardsRangeDTO;
-import com.worstmovie.api.dto.response.MaxMinAwardsRangeDTO;
+import com.worstmovie.api.dto.reesponse.AwardsRangeDTO;
+import com.worstmovie.api.dto.reesponse.MaxMinAwardsRangeDTO;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;

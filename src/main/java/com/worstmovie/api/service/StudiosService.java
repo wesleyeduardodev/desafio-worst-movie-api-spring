@@ -1,8 +1,10 @@
 package com.worstmovie.api.service;
-import com.worstmovie.api.dto.response.StudioResponseDTO;
+import com.worstmovie.api.dto.reesponse.StudioResponseDTO;
+import com.worstmovie.api.dto.request.StudioRequestDTO;
 import com.worstmovie.api.model.Studio;
 import com.worstmovie.api.repository.StudiosRepository;
 import com.worstmovie.api.utils.CSVMovieListUtils;
+import com.worstmovie.api.utils.LinksUtils;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.commons.csv.CSVRecord;
@@ -28,16 +30,36 @@ public class StudiosService {
                 .build());
     }
 
+    public void deleteStudio(Long id) {
+        Studio.deleteById(id);
+    }
+
+    public void updateStudio(Long id, StudioRequestDTO studioRequestDTO) {
+        Studio studio = Studio.findById(id);
+        studio.setName(studioRequestDTO.getName());
+        Studio.persist(studioRequestDTO);
+    }
+
     public Studio saveOrReturnStudio(String name) {
         Optional<Studio> studio = studiosRepository.findByName(name);
         return studio.orElseGet(() -> studiosRepository.save(Studio.builder().name(name).build()));
     }
 
-    public List<StudioResponseDTO> studiosEntityToStudiosResponseDTO(List<Studio> studios) {
+    public StudioResponseDTO studioEntityToStudioResponse(Studio studio, String path) {
+        return StudioResponseDTO
+                .builder()
+                .id(studio.getId())
+                .name(studio.getName())
+                .links(LinksUtils.generateLinks(path, null))
+                .build();
+    }
+
+    public List<StudioResponseDTO> studiosEntityToStudiosResponseDTO(List<Studio> studios, String path) {
         List<StudioResponseDTO> studioResponseDTOS = new ArrayList<>();
         studios.forEach(studio -> studioResponseDTOS.add(StudioResponseDTO.builder()
                 .id(studio.getId())
                 .name(studio.getName())
+                .links(LinksUtils.generateLinks(path, studio.getId()))
                 .build()));
         return studioResponseDTOS;
     }

@@ -1,7 +1,7 @@
 package com.worstmovie.api.service;
-import com.worstmovie.api.dto.response.AwardsRangeDTO;
-import com.worstmovie.api.dto.response.MaxMinAwardsRangeDTO;
-import com.worstmovie.api.dto.response.RankingProducerDTO;
+import com.worstmovie.api.dto.reesponse.AwardsRangeDTO;
+import com.worstmovie.api.dto.reesponse.MaxMinAwardsRangeDTO;
+import com.worstmovie.api.dto.reesponse.RankingProducerDTO;
 import com.worstmovie.api.repository.AwardsRangeRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

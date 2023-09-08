@@ -1,5 +1,6 @@
 package com.worstmovie.api.service;
-import com.worstmovie.api.dto.response.WorstMovieResponseDTO;
+import com.worstmovie.api.dto.LinkDTO;
+import com.worstmovie.api.dto.reesponse.WorstMovieResponseDTO;
 import com.worstmovie.api.model.WorstMovie;
 import com.worstmovie.api.repository.WorstMovieRepository;
 import com.worstmovie.api.utils.CSVMovieListUtils;
@@ -7,6 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.commons.csv.CSVRecord;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @ApplicationScoped
@@ -23,13 +25,14 @@ public class WorstMovieService {
         return worstMovieRepository.save(worstMovie);
     }
 
-    public List<WorstMovieResponseDTO> worstMoviesEntityToWorstMovieResponseDTO(List<WorstMovie> worstMovies) {
+    public List<WorstMovieResponseDTO> worstMoviesEntityToWorstMovieResponseDTO(List<WorstMovie> worstMovies, String path) {
         List<WorstMovieResponseDTO> worstMovieResponseDTOS = new ArrayList<>();
         worstMovies.forEach(worstMovie -> worstMovieResponseDTOS.add(WorstMovieResponseDTO.builder()
                 .id(worstMovie.getId())
                 .year(Integer.valueOf(worstMovie.getYear()))
                 .title(worstMovie.getTitle())
                 .winner(worstMovie.isWinner())
+                .links(Collections.singletonList(LinkDTO.builder().rel("rel").href(path + "/" + worstMovie.getId()).build()))
                 .build()));
         return worstMovieResponseDTOS;
     }

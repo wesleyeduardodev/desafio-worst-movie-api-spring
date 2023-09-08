@@ -1,8 +1,11 @@
-package com.worstmovie.api.dto.response;
+package com.worstmovie.api.dto.reesponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.worstmovie.api.dto.LinkDTO;
 import lombok.*;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
+import java.util.List;
 
 @Builder
 @Getter
@@ -30,4 +33,10 @@ public class ProducerResponseDTO {
             type = SchemaType.STRING
     )
     private String name;
+
+    @Schema(
+            implementation = List.class,
+            type = SchemaType.ARRAY
+    )
+    private List<LinkDTO> links;
 }

@@ -1,5 +1,5 @@
 package com.worstmovie.api.repository;
-import com.worstmovie.api.dto.response.RankingProducerDTO;
+import com.worstmovie.api.dto.reesponse.RankingProducerDTO;
 import com.worstmovie.api.utils.ConverterUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

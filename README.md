@@ -124,3 +124,10 @@ sobre indicados e vencedores do referido prêmio.
 - Para executar os testes via comando, abrindo o terminal do gitBash nas raiz do projeto execute o comando: mvn clean install -DskipUnitTests
 - O resultado pode ser verificado conforma imagem:
 - ![img_11.png](src/main/resources/readme/img_11-26.png)
+
+# Observações Gerais
+
+- As regras de desenvolvimento da API citam a criação de uma API RESTFUL, e por isso alguns endpoins adicionais foram criados para se aproximar desse padrão. Os endpoints adicionais são representados na imagem abaixo.
+- ![img_1.png](src/main/resources/readme/img_1-131.png)
+- Os detalhes dos endpoints adicionais podem ser analisados no link do Swagger: http://localhost:8080/q/swagger-ui/
+- A implementaçãao do HATEOS foi realizada de forma básica, podendo ser melhorada conforme espeficiação presente na documentação do Quarkus: https://quarkus.io/guides/resteasy-reactive#web-links-support
