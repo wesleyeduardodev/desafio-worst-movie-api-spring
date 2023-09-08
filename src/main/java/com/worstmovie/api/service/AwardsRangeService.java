@@ -21,7 +21,7 @@ public class AwardsRangeService {
 
     public MaxMinAwardsRangeDTO findAwardsRangeProducer() {
         List<WorstMovieProducerDTO> worstMovieProducers = awardsRangeRepository.findWorstMovieProducerDTO();
-        List<RankingProducerDTO> rankingWorstMovieProducers = returnRankingProducersDTO(worstMovieProducers);
+        List<RankingProducerDTO> rankingWorstMovieProducers = convertWorstMovieProducerDTOToRankingProducerDTO(worstMovieProducers);
         List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges = returnRankingProducersWithCalculatedPremiumRanges(rankingWorstMovieProducers);
         List<RankingProducerDTO> minAwardsProducers = new ArrayList<>();
         List<RankingProducerDTO> maxAwardsProducers = new ArrayList<>();
@@ -34,6 +34,18 @@ public class AwardsRangeService {
                 .min(mountAwardsRangeDTO(minAwardsProducers))
                 .max(mountAwardsRangeDTO(maxAwardsProducers))
                 .build();
+    }
+
+    private List<RankingProducerDTO> convertWorstMovieProducerDTOToRankingProducerDTO(List<WorstMovieProducerDTO> worstMovieProducers) {
+        List<RankingProducerDTO> rankingWorstMovieProducers = new ArrayList<>();
+        worstMovieProducers.forEach(worstMovieProducer -> {
+            rankingWorstMovieProducers.add(RankingProducerDTO
+                    .builder()
+                    .name(worstMovieProducer.getName())
+                    .years(worstMovieProducer.getYears())
+                    .build());
+        });
+        return rankingWorstMovieProducers;
     }
 
     private List<RankingProducerDTO> returnMaxAwardsProduces(List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges) {
@@ -78,23 +90,6 @@ public class AwardsRangeService {
             }
             previousWin = followingWin;
         }
-    }
-
-    private List<RankingProducerDTO> returnRankingProducersDTO(List<WorstMovieProducerDTO> worstMovieProducerDTOS) {
-        Map<String, RankingProducerDTO> rankingProducerDTOMap = new HashMap<>();
-        worstMovieProducerDTOS.forEach(worstMovie -> {
-            RankingProducerDTO rankingProducer = rankingProducerDTOMap.get(worstMovie.getName());
-            if (Objects.isNull(rankingProducer)) {
-                rankingProducer = RankingProducerDTO
-                        .builder()
-                        .name(worstMovie.getName())
-                        .years(new ArrayList<>())
-                        .build();
-            }
-            rankingProducer.getYears().add(worstMovie.getYear());
-            rankingProducerDTOMap.put(worstMovie.getName(), rankingProducer);
-        });
-        return new ArrayList<>(rankingProducerDTOMap.values());
     }
 
     private List<AwardsRangeDTO> mountAwardsRangeDTO(List<RankingProducerDTO> rankingProducer) {

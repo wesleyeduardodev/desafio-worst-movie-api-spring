@@ -27,7 +27,7 @@ public class WorstMovieService {
         List<WorstMovieResponseDTO> worstMovieResponseDTOS = new ArrayList<>();
         worstMovies.forEach(worstMovie -> worstMovieResponseDTOS.add(WorstMovieResponseDTO.builder()
                 .id(worstMovie.getId())
-                .year(worstMovie.getYear())
+                .year(Integer.valueOf(worstMovie.getYear()))
                 .title(worstMovie.getTitle())
                 .winner(worstMovie.isWinner())
                 .build()));
@@ -36,7 +36,7 @@ public class WorstMovieService {
 
     public WorstMovie returnWorstMovieFromCSVRecord(CSVRecord worstMovieCsvRecord) {
         return WorstMovie.builder()
-                .year(Integer.parseInt(worstMovieCsvRecord.get(CSVMovieListUtils.HEADER_YEAR)))
+                .year(worstMovieCsvRecord.get(CSVMovieListUtils.HEADER_YEAR))
                 .title(worstMovieCsvRecord.get(CSVMovieListUtils.HEADER_TITLE))
                 .winner(worstMovieCsvRecord.get(CSVMovieListUtils.HEADER_WINNER).equals(CSVMovieListUtils.WINNER) ? Boolean.TRUE : Boolean.FALSE)
                 .build();

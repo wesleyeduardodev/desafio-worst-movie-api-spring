@@ -4,6 +4,8 @@ import lombok.*;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
+import java.util.List;
+
 @Builder
 @Getter
 @Setter
@@ -24,8 +26,8 @@ public class WorstMovieProducerDTO {
     private String name;
 
     @Schema(
-            implementation = Integer.class,
-            type = SchemaType.INTEGER
+            implementation = List.class,
+            type = SchemaType.ARRAY
     )
-    private Integer year;
+    private List<Integer> years;
 }

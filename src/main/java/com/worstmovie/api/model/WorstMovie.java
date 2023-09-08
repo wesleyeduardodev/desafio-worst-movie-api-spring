@@ -20,7 +20,7 @@ public class WorstMovie extends PanacheEntityBase {
     private Long id;
 
     @Column(name = "yea", nullable = false)
-    private Integer year;
+    private String year;
 
     @Column(name = "title", nullable = false)
     private String title;
