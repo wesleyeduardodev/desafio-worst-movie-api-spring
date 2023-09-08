@@ -18,9 +18,12 @@ public class AwardsRangeService {
 
     private static final Integer RANGE_DELIMITER_AWARDS = 2;
 
+    public List<RankingProducerDTO> findWorstMovieProducerDTO() {
+        return awardsRangeRepository.findWorstMovieProducerDTO();
+    }
+
     public MaxMinAwardsRangeDTO findAwardsRangeProducer() {
-        List<RankingProducerDTO> rankingWorstMovieProducers = awardsRangeRepository.findWorstMovieProducerDTO();
-        List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges = returnRankingProducersWithCalculatedPremiumRanges(rankingWorstMovieProducers);
+        List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges = returnRankingProducersWithCalculatedPremiumRanges(findWorstMovieProducerDTO());
         List<RankingProducerDTO> minAwardsProducers = returnMinAwardsProduces(rankingProducersWithCalculatedPremiumRanges);
         List<RankingProducerDTO> maxAwardsProducers = returnMaxAwardsProduces(rankingProducersWithCalculatedPremiumRanges);
         return MaxMinAwardsRangeDTO
