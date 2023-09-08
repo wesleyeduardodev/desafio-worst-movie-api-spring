@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import java.util.Objects;
 
 @Builder
 @Getter
@@ -42,4 +43,17 @@ public class AwardsRangeDTO {
             type = SchemaType.INTEGER
     )
     private Integer followingWin;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AwardsRangeDTO that = (AwardsRangeDTO) o;
+        return producer.equals(that.producer) && interval.equals(that.interval) && previousWin.equals(that.previousWin) && followingWin.equals(that.followingWin);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(producer, interval, previousWin, followingWin);
+    }
 }

@@ -21,12 +21,8 @@ public class AwardsRangeService {
     public MaxMinAwardsRangeDTO findAwardsRangeProducer() {
         List<RankingProducerDTO> rankingWorstMovieProducers = awardsRangeRepository.findWorstMovieProducerDTO();
         List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges = returnRankingProducersWithCalculatedPremiumRanges(rankingWorstMovieProducers);
-        List<RankingProducerDTO> minAwardsProducers = new ArrayList<>();
-        List<RankingProducerDTO> maxAwardsProducers = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(rankingProducersWithCalculatedPremiumRanges)) {
-            minAwardsProducers = returnMinAwardsProduces(rankingProducersWithCalculatedPremiumRanges);
-            maxAwardsProducers = returnMaxAwardsProduces(rankingProducersWithCalculatedPremiumRanges);
-        }
+        List<RankingProducerDTO> minAwardsProducers = returnMinAwardsProduces(rankingProducersWithCalculatedPremiumRanges);
+        List<RankingProducerDTO> maxAwardsProducers = returnMaxAwardsProduces(rankingProducersWithCalculatedPremiumRanges);
         return MaxMinAwardsRangeDTO
                 .builder()
                 .min(mountAwardsRangeDTO(minAwardsProducers))
@@ -35,15 +31,23 @@ public class AwardsRangeService {
     }
 
     private List<RankingProducerDTO> returnMaxAwardsProduces(List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges) {
-        Integer maxInterval = returnMaxInterval(rankingProducersWithCalculatedPremiumRanges);
-        return rankingProducersWithCalculatedPremiumRanges.stream()
-                .filter(i -> i.getInterval().equals(maxInterval)).toList();
+        if (CollectionUtils.isNotEmpty(rankingProducersWithCalculatedPremiumRanges)) {
+            Integer maxInterval = returnMaxInterval(rankingProducersWithCalculatedPremiumRanges);
+            return rankingProducersWithCalculatedPremiumRanges.stream()
+                    .filter(i -> i.getInterval().equals(maxInterval)).toList();
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     private List<RankingProducerDTO> returnMinAwardsProduces(List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges) {
-        Integer minInterval = returnMinInterval(rankingProducersWithCalculatedPremiumRanges);
-        return rankingProducersWithCalculatedPremiumRanges.stream()
-                .filter(i -> i.getInterval().equals(minInterval)).toList();
+        if (CollectionUtils.isNotEmpty(rankingProducersWithCalculatedPremiumRanges)) {
+            Integer minInterval = returnMinInterval(rankingProducersWithCalculatedPremiumRanges);
+            return rankingProducersWithCalculatedPremiumRanges.stream()
+                    .filter(i -> i.getInterval().equals(minInterval)).toList();
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     private List<RankingProducerDTO> returnRankingProducersWithCalculatedPremiumRanges(List<RankingProducerDTO> rankingProducerDTOS) {
