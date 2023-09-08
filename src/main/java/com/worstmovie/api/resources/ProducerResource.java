@@ -12,7 +12,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
-@Path("/v1")
+@Path("/v1/producers")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Tag(name = "Producer Resources", description = "Routes used to manipulate producer data.")
@@ -38,9 +38,30 @@ public class ProducerResource {
             description = "Request executed successfully. Producer data obtained."
     )
     @GET
-    @Path("producers")
     public Response findAllProducers() {
-        return Response.ok(producersService.producersEntityToProducersResponseDTO(producersService.findAllProducers())).build();
+        return Response.ok(producersService.producersEntityToProducersResponseDTO(Producer.listAll())).build();
+    }
+
+    @Operation(
+            description = "Return Producers by Id.",
+            operationId = "producersResource.findProducerById",
+            summary = "Return Producers by Id."
+    )
+    @APIResponse(
+            name = "OK",
+            responseCode = "200",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(
+                            ref = "ProducerResponseDTO"
+                    )
+            ),
+            description = "Request executed successfully. Producer data obtained."
+    )
+    @Path("/{id}")
+    @GET
+    public Response findProducerById(@PathParam("id") Long id) {
+        return Response.ok(producersService.producersEntityToProducerResponse(Producer.findById(id))).build();
     }
 
     @Operation(
@@ -60,8 +81,7 @@ public class ProducerResource {
             description = "Request executed successfully. Created producer."
     )
     @POST
-    @Path("producers")
-    public Response saveProducers(ProducerRequestDTO producersRequestDTO) {
+    public Response saveProducer(ProducerRequestDTO producersRequestDTO) {
         Response response;
         try {
             Producer producer = producersService.saveProducer(producersRequestDTO.getName());

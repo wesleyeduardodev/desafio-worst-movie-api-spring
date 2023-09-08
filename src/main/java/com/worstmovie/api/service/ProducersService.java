@@ -42,6 +42,14 @@ public class ProducersService {
         return producersDTOS;
     }
 
+    public ProducerResponseDTO producersEntityToProducerResponse(Producer producer) {
+        return ProducerResponseDTO
+                .builder()
+                .id(producer.getId())
+                .name(producer.getName())
+                .build();
+    }
+
     public List<Producer> returnProducersFromCSVRecord(CSVRecord producerRecord) {
         return CSVMovieListUtils.splitAndCleanRecords(producerRecord, CSVMovieListUtils.HEADER_PRODUCERS).stream()
                 .map(this::buildProducer)

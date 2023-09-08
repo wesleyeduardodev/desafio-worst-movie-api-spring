@@ -4,7 +4,6 @@ import com.worstmovie.api.utils.CSVMovieListUtils;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -23,8 +22,7 @@ public class CSVProcessor {
                     .setDelimiter(CSV_DELIMITER)
                     .setSkipHeaderRecord(Boolean.TRUE)
                     .build();
-            Iterable<CSVRecord> records = csvFormat.parse(cvsFileReader);
-            csvDataImporterService.csvMovieListImporter(records);
+            csvDataImporterService.csvMovieListImporter(csvFormat.parse(cvsFileReader));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
