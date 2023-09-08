@@ -29,25 +29,25 @@ sobre indicados e vencedores do referido prêmio.
 - Acesse as configurações de variáveis de ambiente
 - ![img_9.png](src/main/resources/readme/img_9.png)
 - ![img_10.png](src/main/resources/readme/img_10.png)
-- Na parte de variáveis do sistema, clique em novos e configure os diretórios da seguinte forma:
+- Na parte de variáveis do sistema, clique em Novo e configure os diretórios da seguinte forma:
 - ![img_11.png](src/main/resources/readme/img_11.png)
 - Faça uma edição no Path para configurar o bin:
 - ![img_12.png](src/main/resources/readme/img_12.png)
 - ![img_13.png](src/main/resources/readme/img_13.png)
 - Clique em OK em todas as telas para encerrar a configuração
-- Para testar a configuração do Java abra o cmd e digite: java -version
+- Para testar a configuração do Java abra o cmd e digite: **java -version**
 - ![img_14.png](src/main/resources/readme/img_14.png)
-- Para testar a configuração do Maven abra o cmd e digite: mvn
+- Para testar a configuração do Maven abra o cmd e digite: **mvn**
 - ![img_15.png](src/main/resources/readme/img_15.png)
 - Agora vamos executar alguns comandos para executar a aplicação
-- Abra o diretório raiz do projeto clonado e abra um terminal do GitBash por exemplo. https://git-scm.com/downloads
+- Abra o diretório raiz do projeto clonado e abra como um terminal do GitBash por exemplo. Link GitBash: https://git-scm.com/downloads
 - ![img.png](src/main/resources/readme/img-01.png)
 - ![img_3.png](src/main/resources/readme/img_3-3.png)
-- Execute o comando mvn clean install para gerar o build completo da aplicação, inclusive com os testes.
+- Execute o comando **mvn clean install** para gerar o build completo da aplicação, inclusive com os testes.
 - ![img_2.png](src/main/resources/readme/img_2-2.png)
 - Devemos ter o seguinte resultado:
 - ![img_4.png](src/main/resources/readme/img_4-4.png)
-- Para finalmente iniciar a aplicação. Execute o seguinte comando: ./mvnw compile quarkus:dev
+- Para finalmente iniciar a aplicação. Execute o seguinte comando: **./mvnw compile quarkus:dev**
 - Temos como resultado:
 - ![img_5.png](src/main/resources/readme/img_5-5.png)
 - Utilize o seguinte link acessar o Dashboard do Quarkus: http://localhost:8080
@@ -57,7 +57,7 @@ sobre indicados e vencedores do referido prêmio.
 
 # Passos para executar o projeto utilizando IntelliJ IDEA no idioma inglês
 
-- Clonar o projeto worst-movie-api em algum diretório na máquina. (Para essa aplicação foi usado Windows como ambiente de desenvolvimento)
+- Clonar o projeto **[worst-movie-api](https://github.com/wesleyeduardodev/worst-movie-api.git)** em algum diretório na máquina. (Para essa aplicação foi usado Windows como ambiente de desenvolvimento)
 - Baixar e instalar versão gratuita IntelliJ IDEA Ultimate por 30 dias. https://www.jetbrains.com/idea/download/?section=windows
 - Ao iniciar a IDE, selecionar a Opção File -> Open
 - ![img.png](src/main/resources/readme/img.png)
@@ -81,7 +81,7 @@ sobre indicados e vencedores do referido prêmio.
 - ![img_9.png](src/main/resources/readme/img_9-1.png)
 
 
-# Passos para retorna rfaixa de prêmio entre os produtores (Teste com Swagger).
+# Passos para retorna faixa de prêmio entre os produtores (Teste com Swagger).
 
 - O resultado do teste considera os dados importados do arquivo CSV presente no diretório src/main/resources/movielist.csv.
 - Alterações de dados realizados após essa importação, através de manipulação de dados no banco deve ser feito com atenção, pois pode alterar a perspectiva do teste.
@@ -99,7 +99,7 @@ sobre indicados e vencedores do referido prêmio.
 # Passos para retornar a faixa de prêmio entre os produtores (Teste com Postman).
 
 - Inicialize a aplicação conforme já detalhado.
-- Outra maneira de testar o endpoint que retorna o objetivo em questão, é fazendo uma requisição usando o Postman. https://www.postman.com/downloads/
+- Outra maneira de testar o endpoint que retorna o objetivo em questão, é fazendo uma requisição usando o Postman. Link download: https://www.postman.com/downloads/
 - Após a instalação da ferramenta, abra e crie uma Requisição GET para realizar o teste.
 - Utilize a seguinte URL para acessar o Endpoint: http://localhost:8080/api/v1/awardsrange/producers
 - Clique em Send para obter o resultado conforme abaixo
@@ -116,12 +116,12 @@ sobre indicados e vencedores do referido prêmio.
 - O resulto dos testes é apresentado conforme imagem
 - ![img_8.png](src/main/resources/readme/img_8-23.png)
 - O testeResponseOkReturnAwardsRangeProducer() tenta acessar o endpoint esperando que ele retorne código de 200 para requisição executada com sucesso.
-- O teste testResponseMaxMinAwardsRangeDTO() carrega os dados do CSV, executa a rota que retorna a faixa de prêmio entre os produtores e compara sse o resultado está conforme o esperado no mock presente em com.worstmovie.api.ProducersResourceTest.getMockMaxMinAwardsRangeDTO. Importante reforçar que para esse teste é considerado os dados do CSV presente no diretório src/main/resources/movielist sem alterações. Caso os dados do CSV sejam alterados o mock de retorno de dados também deve ser alterado conforme o esperado:
+- O teste testResponseMaxMinAwardsRangeDTO() carrega os dados do CSV, executa a rota que retorna a faixa de prêmio entre os produtores e compara se o resultado está conforme o esperado no mock presente em com.worstmovie.api.ProducersResourceTest.getMockMaxMinAwardsRangeDTO. Importante reforçar que para esse teste é considerado os dados do CSV presente no diretório src/main/resources/movielist **SEM ALTERAÇÕES**. Caso os dados do CSV sejam alterados o mock de retorno de dados também deve ser alterado conforme o esperado:
 - O mock presente em com.worstmovie.api.ProducersResourceTest.getMockMaxMinAwardsRangeDTO conforme imagem, simula o cenário onde o produtor JOEL SILVER obteve os dois prêmios mais rápido e o produtor MATTHEW VAUGH obteve maior intervalo entre dois prêmios consecutivos.
 - ![img_9.png](src/main/resources/readme/img_9-24.png)
-- Para executar o teste via Intelij IDE, entre na classe ProducersResourceTest e execute os testes conforme imagem:
+- Para executar o teste via IntelliJ IDEA, entre na classe ProducersResourceTest e execute os testes conforme imagem:
 - ![img_10.png](src/main/resources/readme/img_10-25.png)
-- Para executar os testes via comando, abrindo o terminal do gitBash nas raiz do projeto execute o comando: mvn clean install -DskipUnitTests
+- Para executar os testes via comando, abrindo o terminal do gitBash nas raiz do projeto execute o comando: **mvn clean install -DskipUnitTests**
 - O resultado pode ser verificado conforma imagem:
 - ![img_11.png](src/main/resources/readme/img_11-26.png)
 
