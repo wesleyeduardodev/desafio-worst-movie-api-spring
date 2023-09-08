@@ -2,7 +2,6 @@ package com.worstmovie.api.service;
 import com.worstmovie.api.dto.response.AwardsRangeDTO;
 import com.worstmovie.api.dto.response.MaxMinAwardsRangeDTO;
 import com.worstmovie.api.dto.response.RankingProducerDTO;
-import com.worstmovie.api.dto.response.WorstMovieProducerDTO;
 import com.worstmovie.api.repository.AwardsRangeRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -20,8 +19,7 @@ public class AwardsRangeService {
     private static final Integer RANGE_DELIMITER_AWARDS = 2;
 
     public MaxMinAwardsRangeDTO findAwardsRangeProducer() {
-        List<WorstMovieProducerDTO> worstMovieProducers = awardsRangeRepository.findWorstMovieProducerDTO();
-        List<RankingProducerDTO> rankingWorstMovieProducers = convertWorstMovieProducerDTOToRankingProducerDTO(worstMovieProducers);
+        List<RankingProducerDTO> rankingWorstMovieProducers = awardsRangeRepository.findWorstMovieProducerDTO();
         List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges = returnRankingProducersWithCalculatedPremiumRanges(rankingWorstMovieProducers);
         List<RankingProducerDTO> minAwardsProducers = new ArrayList<>();
         List<RankingProducerDTO> maxAwardsProducers = new ArrayList<>();
@@ -34,18 +32,6 @@ public class AwardsRangeService {
                 .min(mountAwardsRangeDTO(minAwardsProducers))
                 .max(mountAwardsRangeDTO(maxAwardsProducers))
                 .build();
-    }
-
-    private List<RankingProducerDTO> convertWorstMovieProducerDTOToRankingProducerDTO(List<WorstMovieProducerDTO> worstMovieProducers) {
-        List<RankingProducerDTO> rankingWorstMovieProducers = new ArrayList<>();
-        worstMovieProducers.forEach(worstMovieProducer -> {
-            rankingWorstMovieProducers.add(RankingProducerDTO
-                    .builder()
-                    .name(worstMovieProducer.getName())
-                    .years(worstMovieProducer.getYears())
-                    .build());
-        });
-        return rankingWorstMovieProducers;
     }
 
     private List<RankingProducerDTO> returnMaxAwardsProduces(List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges) {
