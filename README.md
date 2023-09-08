@@ -77,5 +77,47 @@ sobre indicados e vencedores do referido prêmio.
 - ![img_8.png](src/main/resources/readme/img_8.png)
 - Utilize o seguinte link acessar o Dashboard do Quarkus: http://localhost:8080 
 - Link do Swagger http://localhost:8080/q/swagger-ui/
-- ![img_1.png](src/main/resources/readme/img_1-11.png)- 
+- ![img_1.png](src/main/resources/readme/img_1-11.png) 
 - ![img_9.png](src/main/resources/readme/img_9-1.png)
+
+
+# Passos para retorna faixa de prêmio entre os produtores (Teste com Swagger).
+
+- O resultado do teste considera os dados importados do arquivo CSV presente no diretório src/main/resources/movielist.csv.
+- Alterações de dados realizados após essa importação, através de manipulação de dados no banco deve ser feito com atenção, pois pode alterar a perspectiva do teste.
+- Para gerar outros cenários de testes podem ser feitas várias alterações no arquivo CSV desde que não seja alterado a estruta adequada para um arquivo CSV e nem seja removido os títulos que representam as colunas do CSV. (year;title;studios;producers;winner). Para esses cenários de errros de importação, um log será exibido no console com a característica do erro.
+- Acesse o Swagger através do link: http://localhost:8080/q/swagger-ui/
+- Procure pelo menu Awards Range Resource
+- O menu irá conter a esspecificação da rota a ser usada para retornar o objetivo em questão. Clique na opção "Try it out", conforme imagem:
+- ![img.png](src/main/resources/readme/img-15.png)
+- Agora clique em "Execute"
+- ![img_1.png](src/main/resources/readme/img_1-16.png)
+- O resultado é mostrado conforme imagem:
+- ![img_2.png](src/main/resources/readme/img_2-17.png)
+
+# Passos para retorna a faixa de prêmio entre os produtores (Teste com Postman).
+
+- Outra maneira de testar o endpoint que retorna o objetivo em questão, é fazendo uma requisição usando o Postman. https://www.postman.com/downloads/
+- Após a instalação da ferramenta, abra e crie uma Requisição GET para realizar o teste.
+- Utilize a seguinte URL para acessar o Endpoint: http://localhost:8080/api/v1/awardsrange/producers
+- Clique em Send para obter o resultado conforme abaixo
+- ![img_3.png](src/main/resources/readme/img_3-18.png)
+
+# Passos para executar os testes de integração através do Dashboard do Quarkus
+
+- Acessando o link: http://localhost:8080
+- ![img_5.png](src/main/resources/readme/img_5-20.png)
+- Clique em "VISIT THE DEV UI"
+- Selecione a aba "Continuos Testing" e clique em Star
+- ![img_7.png](src/main/resources/readme/img_7-22.png)
+- O resulto dos testes é apresentado conforme imagem
+- ![img_8.png](src/main/resources/readme/img_8-23.png)
+- O testeResponseOkReturnAwardsRangeProducer() tenta acessar o endpoint esperando que ele retorne código de 200 para requisição executada com sucesso.
+- O teste testResponseMaxMinAwardsRangeDTO() carrega os dados do CSV, executa a rota que retorna a faixa de prêmio entre os produtores e compara sse o resultado está conforme o esperado no mock presente em com.worstmovie.api.ProducersResourceTest.getMockMaxMinAwardsRangeDTO. Importante reforçar que para esse teste é considerado os dados do CSV presente no diretório src/main/resources/movielist sem alterações. Caso os dados do CSV sejam alterados o mock de retorno de dados também deve ser alterado conforme o esperado:
+- O mock presente em com.worstmovie.api.ProducersResourceTest.getMockMaxMinAwardsRangeDTO conforme imagem, simula o cenário onde o produtor JOEL SILVER obteve os dois prêmios mais rápido e o produtor MATTHEW VAUGH obteve maior intervalo entre dois prêmios consecutivos.
+- ![img_9.png](src/main/resources/readme/img_9-24.png)
+- Para executar o teste via Intelij IDE, entre na classe ProducersResourceTest e execute os testes conforme imagem:
+- ![img_10.png](src/main/resources/readme/img_10-25.png)
+- Para executar os testes via comando, abrindo o terminal do gitBash nas raiz do projeto execute o comando: mvn clean install -DskipUnitTests
+- O resultado pode ser verificado conforma imagem:
+- ![img_11.png](src/main/resources/readme/img_11-26.png)
