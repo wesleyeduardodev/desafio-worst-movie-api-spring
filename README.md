@@ -40,7 +40,7 @@ sobre indicados e vencedores do referido prêmio.
 - Para testar a configuração do Maven abra o cmd e digite: mvn
 - ![img_15.png](src/main/resources/readme/img_15.png)
 - Agora vamos executar alguns comandos para executar a aplicação
-- Abra o diretório raiz do projeto e abra um terminal do GitBash por exemplo. https://git-scm.com/downloads
+- Abra o diretório raiz do projeto clonado e abra um terminal do GitBash por exemplo. https://git-scm.com/downloads
 - ![img.png](src/main/resources/readme/img-01.png)
 - ![img_3.png](src/main/resources/readme/img_3-3.png)
 - Execute o comando mvn clean install para gerar o build completo da aplicação, inclusive com os testes.
@@ -81,11 +81,12 @@ sobre indicados e vencedores do referido prêmio.
 - ![img_9.png](src/main/resources/readme/img_9-1.png)
 
 
-# Passos para retorna faixa de prêmio entre os produtores (Teste com Swagger).
+# Passos para retorna rfaixa de prêmio entre os produtores (Teste com Swagger).
 
 - O resultado do teste considera os dados importados do arquivo CSV presente no diretório src/main/resources/movielist.csv.
 - Alterações de dados realizados após essa importação, através de manipulação de dados no banco deve ser feito com atenção, pois pode alterar a perspectiva do teste.
 - Para gerar outros cenários de testes podem ser feitas várias alterações no arquivo CSV desde que não seja alterado a estruta adequada para um arquivo CSV e nem seja removido os títulos que representam as colunas do CSV. (year;title;studios;producers;winner). Para esses cenários de errros de importação, um log será exibido no console com a característica do erro.
+- Inicialize a aplicação conforme já detalhado.
 - Acesse o Swagger através do link: http://localhost:8080/q/swagger-ui/
 - Procure pelo menu Awards Range Resource
 - O menu irá conter a esspecificação da rota a ser usada para retornar o objetivo em questão. Clique na opção "Try it out", conforme imagem:
@@ -95,8 +96,9 @@ sobre indicados e vencedores do referido prêmio.
 - O resultado é mostrado conforme imagem:
 - ![img_2.png](src/main/resources/readme/img_2-17.png)
 
-# Passos para retorna a faixa de prêmio entre os produtores (Teste com Postman).
+# Passos para retornar a faixa de prêmio entre os produtores (Teste com Postman).
 
+- Inicialize a aplicação conforme já detalhado.
 - Outra maneira de testar o endpoint que retorna o objetivo em questão, é fazendo uma requisição usando o Postman. https://www.postman.com/downloads/
 - Após a instalação da ferramenta, abra e crie uma Requisição GET para realizar o teste.
 - Utilize a seguinte URL para acessar o Endpoint: http://localhost:8080/api/v1/awardsrange/producers
@@ -105,6 +107,7 @@ sobre indicados e vencedores do referido prêmio.
 
 # Passos para executar os testes de integração através do Dashboard do Quarkus
 
+- Inicialize a aplicação conforme já detalhado.
 - Acessando o link: http://localhost:8080
 - ![img_5.png](src/main/resources/readme/img_5-20.png)
 - Clique em "VISIT THE DEV UI"
