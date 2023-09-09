@@ -103,25 +103,25 @@ sobre indicados e vencedores do referido prêmio.
 - Clique em Send para obter o resultado conforme abaixo
 - ![img_3.png](src/main/resources/readme/img_3-18.png)
 
-# Passos para executar os testes de integração através do Dashboard do Quarkus
+# Passos para executar os testes de integração
 
-- Inicialize a aplicação conforme já detalhado.
+- Para testar usando o Dashboard do Quarkus, inicialize a aplicação conforme já detalhado.
 - Acessando o link: http://localhost:8080
 - ![img_5.png](src/main/resources/readme/img_5-20.png)
 - Clique em "VISIT THE DEV UI"
-- Selecione a aba "Continuos Testing" e clique em Star
+- Selecione a aba "Continuos Testing" e clique em Start
 - ![img_7.png](src/main/resources/readme/img_7-22.png)
 - O resulto dos testes é apresentado conforme imagem
-- ![img_8.png](src/main/resources/readme/img_8-23.png)
-- O testeResponseOkReturnAwardsRangeProducer() tenta acessar o endpoint esperando que ele retorne código de 200 para requisição executada com sucesso.
-- O teste testResponseMaxMinAwardsRangeDTO() carrega os dados do CSV, executa a rota que retorna a faixa de prêmio entre os produtores e compara se o resultado está conforme o esperado no mock presente em com.worstmovie.api.ProducersResourceTest.getMockMaxMinAwardsRangeDTO. Importante reforçar que para esse teste é considerado os dados do CSV presente no diretório src/main/resources/files/movielist **SEM ALTERAÇÕES**. Caso os dados do CSV sejam alterados o mock de retorno de dados também deve ser alterado conforme o esperado:
-- O mock presente em com.worstmovie.api.ProducersResourceTest.getMockMaxMinAwardsRangeDTO conforme imagem, simula o cenário onde o produtor JOEL SILVER obteve os dois prêmios mais rápido e o produtor MATTHEW VAUGH obteve maior intervalo entre dois prêmios consecutivos.
-- ![img_9.png](src/main/resources/readme/img_9-24.png)
-- Para executar o teste via IntelliJ IDEA, entre na classe ProducersResourceTest e execute os testes conforme imagem:
-- ![img_10.png](src/main/resources/readme/img_10-25.png)
-- Para executar os testes via comando, abrindo o terminal do gitBash nas raiz do projeto execute o comando: **mvn clean install -DskipUnitTests**
-- O resultado pode ser verificado conforma imagem:
-- ![img_11.png](src/main/resources/readme/img_11-26.png)
+- ![img.png](src/main/resources/readme/img-2090.png)
+- Os testes presentes na classe AwardsRangeResourceTest testam se as rotas do AwardsRangeResourceAPI retornam requisição realizada com sucesso (status 200) ao acessar seus endpoints. Além disso também realizam testes comparando se os resultados das faixas de prêmios presentes no arquivo CSV importado ao iniciar a aplicaççao são iguais ao mocks que foram criados na classe para realizar essa comparação.
+- Os testes presentes na classe AwardsRangeServiceTest faz um mock de um rank de faixa de prêmios e compara o resulta com outro mock. 
+- Importante reforçar que para esse teste é considerado os dados do CSV presente no diretório src/main/resources/files/movielist **SEM ALTERAÇÕES**. Caso os dados do CSV sejam alterados o mock de retorno de dados também deve ser alterado conforme o esperado:
+- Para executar o teste via IntelliJ IDEA, entre na classes de teste e clique no botão conforme imagem de exemplo:
+![img_3.png](src/main/resources/readme/img_3-2093.png)
+- Para executar os testes via comando, abra o terminal do gitBash nas raiz do projeto execute o comando: **mvn clean install -DskipUnitTests**
+- O resultado pode ser verificado conforma imagem
+![img_2.png](src/main/resources/readme/img_2-2092.png)
+
 
 # Observações Gerais Importantes
 
