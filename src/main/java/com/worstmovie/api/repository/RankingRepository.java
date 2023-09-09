@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class AwardsRangeRepository {
+public class RankingRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -25,7 +25,7 @@ public class AwardsRangeRepository {
                 "group by p.name\n" +
                 "order by p.name";
         Query query = entityManager.createNativeQuery(nativeQueryWorstMovieProducer);
-        List<RankingDTO> rankingProducerDTOS = buildRankingDTOS(query.getResultList());
+        List<RankingDTO> rankingProducerDTOS = buildRankings(query.getResultList());
         return rankingProducerDTOS;
     }
 
@@ -38,11 +38,11 @@ public class AwardsRangeRepository {
                 "group by s.name\n" +
                 "order by s.name";
         Query query = entityManager.createNativeQuery(nativeQueryWorstMovieStudio);
-        List<RankingDTO> rankingStudiosDTOS = buildRankingDTOS(query.getResultList());
+        List<RankingDTO> rankingStudiosDTOS = buildRankings(query.getResultList());
         return rankingStudiosDTOS;
     }
 
-    private List<RankingDTO> buildRankingDTOS(List<Object[]> queryResultList) {
+    private List<RankingDTO> buildRankings(List<Object[]> queryResultList) {
         List<RankingDTO> rankingDTOS = new ArrayList<>();
         for (Object[] result : queryResultList) {
             String concatenatedYears = (String) result[1];

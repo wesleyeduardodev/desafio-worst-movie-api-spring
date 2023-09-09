@@ -4,13 +4,13 @@
 sobre indicados e vencedores do referido prêmio.
 
 - Um dos principais objetivos dessa API é obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que
-  obteve dois prêmios mais rápido. A aprensentação desses dados seque a especificação no arquivo src/main/resources/Especificação Backend.pdf.
+  obteve dois prêmios mais rápido. A aprensentação desses dados seque a especificação no arquivo src/main/resources/files/Especificação Backend.pdf.
 
 # Características da API
 
 - API desenvolvida usando Quarkus Framework na versão 3.3.2
   - A estrutura inicial do projeto foi gerada pelo START CODING do quarkus (https://code.quarkus.io/)
-- Ao iniciar a aplicação, o arquivo CSV presente no diretório src/main/resources/movielist.csv é lido, processado e seus dados são armazenados no banco de dados.
+- Ao iniciar a aplicação, o arquivo CSV presente no diretório src/main/resources/files/movielist.csv é lido, processado e seus dados são armazenados no banco de dados.
 - Utilização de SGBD embarcado H2
 - Documentação com Swagger
 - Disponibilização de rota para obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que
@@ -81,7 +81,7 @@ sobre indicados e vencedores do referido prêmio.
 
 # Passos para retorna faixa de prêmio entre os produtores (Teste com Swagger).
 
-- O resultado do teste considera os dados importados do arquivo CSV presente no diretório src/main/resources/movielist.csv.
+- O resultado do teste considera os dados importados do arquivo CSV presente no diretório src/main/resources/files/movielist.csv.
 - Alterações de dados realizados após essa importação, através de manipulação de dados no banco deve ser feito com atenção, pois pode alterar a perspectiva do teste.
 - Para gerar outros cenários de testes podem ser feitas várias alterações no arquivo CSV desde que não seja alterado a estruta adequada para um arquivo CSV e nem seja removido os títulos que representam as colunas do CSV. (year;title;studios;producers;winner). Para esses cenários de errros de importação, um log será exibido no console com a característica do erro.
 - Inicialize a aplicação conforme já detalhado.
@@ -114,7 +114,7 @@ sobre indicados e vencedores do referido prêmio.
 - O resulto dos testes é apresentado conforme imagem
 - ![img_8.png](src/main/resources/readme/img_8-23.png)
 - O testeResponseOkReturnAwardsRangeProducer() tenta acessar o endpoint esperando que ele retorne código de 200 para requisição executada com sucesso.
-- O teste testResponseMaxMinAwardsRangeDTO() carrega os dados do CSV, executa a rota que retorna a faixa de prêmio entre os produtores e compara se o resultado está conforme o esperado no mock presente em com.worstmovie.api.ProducersResourceTest.getMockMaxMinAwardsRangeDTO. Importante reforçar que para esse teste é considerado os dados do CSV presente no diretório src/main/resources/movielist **SEM ALTERAÇÕES**. Caso os dados do CSV sejam alterados o mock de retorno de dados também deve ser alterado conforme o esperado:
+- O teste testResponseMaxMinAwardsRangeDTO() carrega os dados do CSV, executa a rota que retorna a faixa de prêmio entre os produtores e compara se o resultado está conforme o esperado no mock presente em com.worstmovie.api.ProducersResourceTest.getMockMaxMinAwardsRangeDTO. Importante reforçar que para esse teste é considerado os dados do CSV presente no diretório src/main/resources/files/movielist **SEM ALTERAÇÕES**. Caso os dados do CSV sejam alterados o mock de retorno de dados também deve ser alterado conforme o esperado:
 - O mock presente em com.worstmovie.api.ProducersResourceTest.getMockMaxMinAwardsRangeDTO conforme imagem, simula o cenário onde o produtor JOEL SILVER obteve os dois prêmios mais rápido e o produtor MATTHEW VAUGH obteve maior intervalo entre dois prêmios consecutivos.
 - ![img_9.png](src/main/resources/readme/img_9-24.png)
 - Para executar o teste via IntelliJ IDEA, entre na classe ProducersResourceTest e execute os testes conforme imagem:

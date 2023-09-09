@@ -1,8 +1,6 @@
 package com.worstmovie.api.service;
 import com.worstmovie.api.dto.response.*;
-import com.worstmovie.api.repository.AwardsRangeRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import java.util.*;
@@ -12,21 +10,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AwardsRangeService {
 
-    @Inject
-    AwardsRangeRepository awardsRangeRepository;
-
     private static final Integer RANGE_DELIMITER_AWARDS = 2;
 
-    public List<RankingDTO> findWorstMovieProducerDTO() {
-        return awardsRangeRepository.findWorstMovieProducerDTO();
-    }
-
-    public List<RankingDTO> findWorstMovieStudioDTO() {
-        return awardsRangeRepository.findWorstMovieStudioDTO();
-    }
-
-    public MaxMinProducersAwardsRangeResponseDTO findAwardsRangeProducer() {
-        List<RankingDTO> rankingProducersWithCalculatedPremiumRanges = returnRankingWithCalculatedPremiumRanges(findWorstMovieProducerDTO());
+    public MaxMinProducersAwardsRangeResponseDTO findAwardsRangeProducer(List<RankingDTO> rankingProducers) {
+        List<RankingDTO> rankingProducersWithCalculatedPremiumRanges = returnRankingWithCalculatedPremiumRanges(rankingProducers);
         List<RankingDTO> minAwardsProducers = returnMinAwards(rankingProducersWithCalculatedPremiumRanges);
         List<RankingDTO> maxAwardsProducers = returnMaxAwards(rankingProducersWithCalculatedPremiumRanges);
         return MaxMinProducersAwardsRangeResponseDTO
@@ -36,8 +23,8 @@ public class AwardsRangeService {
                 .build();
     }
 
-    public MaxMinStudiosAwardsRangeResponseDTO findAwardsRangeStudio() {
-        List<RankingDTO> rankingStudiosWithCalculatedPremiumRanges = returnRankingWithCalculatedPremiumRanges(findWorstMovieStudioDTO());
+    public MaxMinStudiosAwardsRangeResponseDTO findAwardsRangeStudio(List<RankingDTO> rankingStudios) {
+        List<RankingDTO> rankingStudiosWithCalculatedPremiumRanges = returnRankingWithCalculatedPremiumRanges(rankingStudios);
         List<RankingDTO> minAwardsStudios = returnMinAwards(rankingStudiosWithCalculatedPremiumRanges);
         List<RankingDTO> maxAwardsStudios = returnMaxAwards(rankingStudiosWithCalculatedPremiumRanges);
         return MaxMinStudiosAwardsRangeResponseDTO
