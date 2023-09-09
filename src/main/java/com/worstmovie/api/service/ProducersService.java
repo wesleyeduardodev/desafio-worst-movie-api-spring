@@ -1,4 +1,5 @@
 package com.worstmovie.api.service;
+import com.worstmovie.api.cache.CacheStoreProducers;
 import com.worstmovie.api.dto.response.ProducerResponseDTO;
 import com.worstmovie.api.dto.request.ProducerRequestDTO;
 import com.worstmovie.api.model.Producer;
@@ -10,6 +11,7 @@ import jakarta.inject.Inject;
 import org.apache.commons.csv.CSVRecord;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -18,6 +20,9 @@ public class ProducersService {
 
     @Inject
     ProducersRepository producersRepository;
+
+    @Inject
+    CacheStoreProducers cacheStoreProducers;
 
     public Producer saveProducer(String name) {
         return producersRepository.save(Producer
@@ -39,6 +44,24 @@ public class ProducersService {
     public Producer saveOrReturnProducer(String name) {
         Optional<Producer> producer = producersRepository.findByName(name);
         return producer.orElseGet(() -> producersRepository.save(Producer.builder().name(name).build()));
+    }
+
+    public List<Producer> saveAll(List<Producer> producers) {
+        List<Producer> producerSaveds = new ArrayList<>();
+        producers.forEach(producer -> {
+            Producer producerCache = cacheStoreProducers.storeProducers().get(producer.getName());
+            if (Objects.nonNull(producerCache)) {
+                producerSaveds.add(producerCache);
+            } else {
+                producerCache = producersRepository.findByName(producer.getName()).orElse(null);
+                if (Objects.isNull(producerCache)) {
+                    producerCache = producersRepository.save(producer);
+                }
+                cacheStoreProducers.storeProducers().add(producerCache.getName(), producerCache);
+                producerSaveds.add(producerCache);
+            }
+        });
+        return producerSaveds;
     }
 
     public List<ProducerResponseDTO> toProducersResponseDTO(List<Producer> producers, String pathRequest) {

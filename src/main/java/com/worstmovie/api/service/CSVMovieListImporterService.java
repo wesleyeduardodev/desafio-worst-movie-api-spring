@@ -36,21 +36,9 @@ public class CSVMovieListImporterService {
 
     private void saveRecords(List<Producer> producers, List<Studio> studios, WorstMovie worstMovie) {
         WorstMovie worstMovieSaved = worstMovieService.saveWorstMovie(worstMovie);
-        saveProducers(producers, worstMovieSaved);
-        saveStudios(studios, worstMovieSaved);
-    }
-
-    private void saveProducers(List<Producer> producers, WorstMovie worstMovie) {
-        producers.forEach(producer -> {
-            Producer producerSaved = producersService.saveOrReturnProducer(producer.getName());
-            worstMovieProducersService.saveWorstMovieProducers(producerSaved, worstMovie);
-        });
-    }
-
-    private void saveStudios(List<Studio> studios, WorstMovie worstMovie) {
-        studios.forEach(studio -> {
-            Studio studioSaved = studiosService.saveOrReturnStudio(studio.getName());
-            worstMovieStudioService.saveWorstMovieStudio(studioSaved, worstMovie);
-        });
+        Iterable<Producer> producersSaved = producersService.saveAll(producers);
+        Iterable<Studio> studiosSaved = studiosService.saveAll(studios);
+        producersSaved.forEach(producer -> worstMovieProducersService.saveWorstMovieProducers(producer, worstMovieSaved));
+        studiosSaved.forEach(sudio -> worstMovieStudioService.saveWorstMovieStudio(sudio, worstMovieSaved));
     }
 }

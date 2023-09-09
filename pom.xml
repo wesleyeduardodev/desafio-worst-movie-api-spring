@@ -107,6 +107,11 @@
       <version>1.5.3.Final</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>31.1-jre</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
