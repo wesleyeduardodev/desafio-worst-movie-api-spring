@@ -53,7 +53,6 @@ sobre indicados e vencedores do referido prêmio.
 - Utilize o seguinte link acessar o Dashboard do Quarkus: http://localhost:8080
 - Link do Swagger http://localhost:8080/q/swagger-ui/
 - ![img.png](src/main/resources/readme/img-10.png)
-- ![img_8.png](src/main/resources/readme/img_8-8.png)
 
 # Passos para executar o projeto utilizando IntelliJ IDEA no idioma inglês
 
@@ -78,7 +77,6 @@ sobre indicados e vencedores do referido prêmio.
 - Utilize o seguinte link acessar o Dashboard do Quarkus: http://localhost:8080 
 - Link do Swagger http://localhost:8080/q/swagger-ui/
 - ![img_1.png](src/main/resources/readme/img_1-11.png) 
-- ![img_9.png](src/main/resources/readme/img_9-1.png)
 
 
 # Passos para retorna faixa de prêmio entre os produtores (Teste com Swagger).
