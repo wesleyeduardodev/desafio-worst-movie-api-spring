@@ -1,6 +1,6 @@
 package com.worstmovie.api;
-import com.worstmovie.api.dto.reesponse.AwardsRangeDTO;
-import com.worstmovie.api.dto.reesponse.MaxMinAwardsRangeDTO;
+import com.worstmovie.api.dto.response.AwardsRangeDTO;
+import com.worstmovie.api.dto.response.MaxMinAwardsRangeResponseDTO;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
@@ -24,19 +24,19 @@ public class ProducersResourceTest {
 
     @Test
     public void testResponseMaxMinAwardsRangeDTO() {
-        MaxMinAwardsRangeDTO maxMinAwardsRangeDTO = given()
+        MaxMinAwardsRangeResponseDTO maxMinAwardsRangeDTO = given()
                 .when().get(PATH_AWARDSRANGE_PRODUCERS)
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .extract()
                 .body()
-                .as(MaxMinAwardsRangeDTO.class);
+                .as(MaxMinAwardsRangeResponseDTO.class);
         assertNotNull(maxMinAwardsRangeDTO);
         assertEquals(maxMinAwardsRangeDTO.getMax(), getMockMaxMinAwardsRangeDTO().getMax());
         assertEquals(maxMinAwardsRangeDTO.getMin(), getMockMaxMinAwardsRangeDTO().getMin());
     }
 
-    private MaxMinAwardsRangeDTO getMockMaxMinAwardsRangeDTO() {
+    private MaxMinAwardsRangeResponseDTO getMockMaxMinAwardsRangeDTO() {
         AwardsRangeDTO minRangeProducer = AwardsRangeDTO
                 .builder()
                 .producer("JOEL SILVER")
@@ -51,7 +51,7 @@ public class ProducersResourceTest {
                 .previousWin(2002)
                 .followingWin(2015)
                 .build();
-        return MaxMinAwardsRangeDTO
+        return MaxMinAwardsRangeResponseDTO
                 .builder()
                 .min(Collections.singletonList(minRangeProducer))
                 .max(Collections.singletonList(maxRangeProducer))

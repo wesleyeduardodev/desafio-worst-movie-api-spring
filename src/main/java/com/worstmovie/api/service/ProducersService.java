@@ -1,5 +1,5 @@
 package com.worstmovie.api.service;
-import com.worstmovie.api.dto.reesponse.ProducerResponseDTO;
+import com.worstmovie.api.dto.response.ProducerResponseDTO;
 import com.worstmovie.api.dto.request.ProducerRequestDTO;
 import com.worstmovie.api.model.Producer;
 import com.worstmovie.api.repository.ProducersRepository;
@@ -33,7 +33,7 @@ public class ProducersService {
     public void updateProducers(Long id, ProducerRequestDTO producersRequestDTO) {
         Producer producer = Producer.findById(id);
         producer.setName(producersRequestDTO.getName());
-        Producer.persist(producer);
+        producersRepository.save(producer);
     }
 
     public Producer saveOrReturnProducer(String name) {
@@ -41,7 +41,7 @@ public class ProducersService {
         return producer.orElseGet(() -> producersRepository.save(Producer.builder().name(name).build()));
     }
 
-    public List<ProducerResponseDTO> producersEntityToProducersResponseDTO(List<Producer> producers, String pathRequest) {
+    public List<ProducerResponseDTO> toProducersResponseDTO(List<Producer> producers, String pathRequest) {
         List<ProducerResponseDTO> producersDTOS = new ArrayList<>();
         producers.forEach(producer -> producersDTOS.add(ProducerResponseDTO.builder()
                 .id(producer.getId())
@@ -51,7 +51,7 @@ public class ProducersService {
         return producersDTOS;
     }
 
-    public ProducerResponseDTO producersEntityToProducerResponse(Producer producer, String path) {
+    public ProducerResponseDTO toProducerResponseDTO(Producer producer, String path) {
         return ProducerResponseDTO
                 .builder()
                 .id(producer.getId())

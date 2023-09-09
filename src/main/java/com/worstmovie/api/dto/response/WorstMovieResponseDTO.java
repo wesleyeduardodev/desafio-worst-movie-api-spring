@@ -1,10 +1,9 @@
-package com.worstmovie.api.dto.reesponse;
+package com.worstmovie.api.dto.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.worstmovie.api.dto.LinkDTO;
 import lombok.*;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-
 import java.util.List;
 
 @Builder
@@ -32,7 +31,7 @@ public class WorstMovieResponseDTO {
             implementation = Integer.class,
             type = SchemaType.INTEGER
     )
-    private Integer year;
+    private String year;
 
     @Schema(
             description = "WorstMovie title.",

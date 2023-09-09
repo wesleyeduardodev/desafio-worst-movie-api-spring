@@ -1,5 +1,5 @@
 package com.worstmovie.api.service;
-import com.worstmovie.api.dto.reesponse.StudioResponseDTO;
+import com.worstmovie.api.dto.response.StudioResponseDTO;
 import com.worstmovie.api.dto.request.StudioRequestDTO;
 import com.worstmovie.api.model.Studio;
 import com.worstmovie.api.repository.StudiosRepository;
@@ -37,7 +37,7 @@ public class StudiosService {
     public void updateStudio(Long id, StudioRequestDTO studioRequestDTO) {
         Studio studio = Studio.findById(id);
         studio.setName(studioRequestDTO.getName());
-        Studio.persist(studioRequestDTO);
+        studiosRepository.save(studio);
     }
 
     public Studio saveOrReturnStudio(String name) {
@@ -45,7 +45,7 @@ public class StudiosService {
         return studio.orElseGet(() -> studiosRepository.save(Studio.builder().name(name).build()));
     }
 
-    public StudioResponseDTO studioEntityToStudioResponse(Studio studio, String path) {
+    public StudioResponseDTO toStudioResponseDTO(Studio studio, String path) {
         return StudioResponseDTO
                 .builder()
                 .id(studio.getId())

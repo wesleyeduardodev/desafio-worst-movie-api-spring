@@ -1,10 +1,9 @@
-package com.worstmovie.api.dto.reesponse;
+package com.worstmovie.api.dto.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.worstmovie.api.dto.LinkDTO;
 import lombok.*;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-
 import java.util.List;
 
 @Builder
@@ -13,22 +12,22 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(
-        description = "Object used to map producer datas.",
-        name = "ProducerResponseDTO",
+        description = "Object used to map studio datas.",
+        name = "StudioResponseDTO",
         type = SchemaType.OBJECT
 )
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ProducerResponseDTO {
+public class StudioResponseDTO {
 
     @Schema(
-            description = "Producer code.",
+            description = "Studio code.",
             implementation = Long.class,
             type = SchemaType.NUMBER
     )
     private Long id;
 
     @Schema(
-            description = "Producer name.",
+            description = "Studio name.",
             implementation = String.class,
             type = SchemaType.STRING
     )

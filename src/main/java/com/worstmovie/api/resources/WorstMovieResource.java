@@ -1,47 +1,77 @@
 package com.worstmovie.api.resources;
+import com.worstmovie.api.dto.request.WorstMovieRequestDTO;
+import com.worstmovie.api.dto.response.WorstMovieResponseDTO;
+import com.worstmovie.api.model.WorstMovie;
 import com.worstmovie.api.service.WorstMovieService;
+import com.worstmovie.api.utils.LinksUtils;
+import com.worstmovie.api.utils.ResponseMapperUtils;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
-import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.media.Content;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
-import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-@Path("/v1")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-@Tag(name = "WorstMovie Resources", description = "Routes used to manipulate WorstMovie data.")
-public class WorstMovieResource {
+import org.jboss.resteasy.reactive.RestResponse;
+import java.util.Optional;
+
+public class WorstMovieResource implements WorstMovieResourceAPI {
 
     @Inject
     WorstMovieService worstMovieService;
 
-    @Operation(
-            description = "Return all WorstMovies.",
-            operationId = "worstMovieResource.findAllWorstMovies",
-            summary = "Return all WorstMovies."
-    )
-    @APIResponse(
-            name = "OK",
-            responseCode = "200",
-            content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(
-                            ref = "WorstMovieResponseDTO"
-                    )
-            ),
-            description = "Request executed successfully. WorstMovie data obtained."
-    )
-    @GET
-    @Path("worstmovies")
     public Response findAllWorstMovies(@Context UriInfo uriInfo) {
-        return Response.ok(worstMovieService.worstMoviesEntityToWorstMovieResponseDTO(worstMovieService.findAllWorstMovies(), uriInfo.getAbsolutePath().toString())).build();
+        return Response.ok(worstMovieService.toWorstMoviesResponseDTO(worstMovieService.findAllWorstMovies(), uriInfo.getAbsolutePath().toString())).build();
+    }
+
+    @Override
+    public Response findWorstMovieById(UriInfo uriInfo, Long id) {
+        Optional<WorstMovie> worstMovie = WorstMovie.findByIdOptional(id);
+        Response response;
+        if (worstMovie.isPresent()) {
+            response = Response.ok(worstMovieService.toWorstMovieResponseDTO(worstMovie.get(), uriInfo.getAbsolutePath().toString())).build();
+        } else {
+            response = ResponseMapperUtils.notFound();
+        }
+        return response;
+    }
+
+    @Override
+    public Response saveWorstMovie(UriInfo uriInfo, WorstMovieRequestDTO worstMovieRequestDTO) {
+        WorstMovie worstMovie = worstMovieService.saveWorstMovie(worstMovieRequestDTO.getYear(), worstMovieRequestDTO.getTitle(), worstMovieRequestDTO.getWinner());
+        WorstMovieResponseDTO worstMovieResponseDTO = WorstMovieResponseDTO
+                .builder()
+                .id(worstMovie.getId())
+                .year(worstMovie.getYear())
+                .title(worstMovie.getTitle())
+                .winner(worstMovie.isWinner())
+                .links(LinksUtils.generateLinks(uriInfo.getAbsolutePath().toString(), worstMovie.getId()))
+                .build();
+        return Response.status(RestResponse.Status.CREATED).entity(worstMovieResponseDTO).build();
+    }
+
+    @Override
+    public Response updateWorstMovie(Long id, WorstMovieRequestDTO worstMovieRequestDTO) {
+        Optional<WorstMovie> worstMovie = WorstMovie.findByIdOptional(id);
+        Response response;
+        if (worstMovie.isPresent()) {
+            worstMovieService.updateWorstMovie(id, worstMovieRequestDTO);
+            response = Response.ok().build();
+        } else {
+            response = ResponseMapperUtils.badRequest("01", "WorstMovie not found");
+        }
+        return response;
+    }
+
+    @Override
+    @Transactional
+    public Response deleteWorstMovie(Long id) {
+        Optional<WorstMovie> worstMovie = WorstMovie.findByIdOptional(id);
+        Response response;
+        if (worstMovie.isPresent()) {
+            worstMovieService.deleteWorstMovie(worstMovie.get().getId());
+            response = ResponseMapperUtils.noContent();
+        } else {
+            response = ResponseMapperUtils.notFound();
+        }
+        return response;
     }
 }

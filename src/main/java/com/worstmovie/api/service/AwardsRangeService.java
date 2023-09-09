@@ -1,7 +1,7 @@
 package com.worstmovie.api.service;
-import com.worstmovie.api.dto.reesponse.AwardsRangeDTO;
-import com.worstmovie.api.dto.reesponse.MaxMinAwardsRangeDTO;
-import com.worstmovie.api.dto.reesponse.RankingProducerDTO;
+import com.worstmovie.api.dto.response.AwardsRangeDTO;
+import com.worstmovie.api.dto.response.MaxMinAwardsRangeResponseDTO;
+import com.worstmovie.api.dto.response.RankingProducerDTO;
 import com.worstmovie.api.repository.AwardsRangeRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -23,11 +23,11 @@ public class AwardsRangeService {
         return awardsRangeRepository.findWorstMovieProducerDTO();
     }
 
-    public MaxMinAwardsRangeDTO findAwardsRangeProducer() {
+    public MaxMinAwardsRangeResponseDTO findAwardsRangeProducer() {
         List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges = returnRankingProducersWithCalculatedPremiumRanges(findWorstMovieProducerDTO());
         List<RankingProducerDTO> minAwardsProducers = returnMinAwardsProduces(rankingProducersWithCalculatedPremiumRanges);
         List<RankingProducerDTO> maxAwardsProducers = returnMaxAwardsProduces(rankingProducersWithCalculatedPremiumRanges);
-        return MaxMinAwardsRangeDTO
+        return MaxMinAwardsRangeResponseDTO
                 .builder()
                 .min(mountAwardsRangeDTO(minAwardsProducers))
                 .max(mountAwardsRangeDTO(maxAwardsProducers))
