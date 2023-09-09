@@ -18,9 +18,11 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;;
 public interface AwardsRangeResourceAPI {
 
     @Operation(
-            description = "Return Awards Range Producers.",
+            description = "Essa rota serve para obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que\n" +
+                    "obteve dois prêmios mais rápido.",
             operationId = "awardsRangeResource.findAwardsRangeProducer",
-            summary = "Return Awards Range Producers."
+            summary = "Obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que\n" +
+                    "obteve dois prêmios mais rápido."
     )
     @APIResponse(
             name = "OK",
