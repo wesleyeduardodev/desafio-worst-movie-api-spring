@@ -12,11 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 @Schema(
         description = "Object used to return Ranking Producer.",
-        name = "RankingProducerDTO",
+        name = "RankingDTO",
         type = SchemaType.OBJECT
 )
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class RankingProducerDTO {
+public class RankingDTO {
 
     @Schema(
             implementation = String.class,

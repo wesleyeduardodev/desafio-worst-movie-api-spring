@@ -1,7 +1,5 @@
 package com.worstmovie.api.service;
-import com.worstmovie.api.dto.response.AwardsRangeDTO;
-import com.worstmovie.api.dto.response.MaxMinAwardsRangeResponseDTO;
-import com.worstmovie.api.dto.response.RankingProducerDTO;
+import com.worstmovie.api.dto.response.*;
 import com.worstmovie.api.repository.AwardsRangeRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -19,76 +17,91 @@ public class AwardsRangeService {
 
     private static final Integer RANGE_DELIMITER_AWARDS = 2;
 
-    public List<RankingProducerDTO> findWorstMovieProducerDTO() {
+    public List<RankingDTO> findWorstMovieProducerDTO() {
         return awardsRangeRepository.findWorstMovieProducerDTO();
     }
 
-    public MaxMinAwardsRangeResponseDTO findAwardsRangeProducer() {
-        List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges = returnRankingProducersWithCalculatedPremiumRanges(findWorstMovieProducerDTO());
-        List<RankingProducerDTO> minAwardsProducers = returnMinAwardsProduces(rankingProducersWithCalculatedPremiumRanges);
-        List<RankingProducerDTO> maxAwardsProducers = returnMaxAwardsProduces(rankingProducersWithCalculatedPremiumRanges);
-        return MaxMinAwardsRangeResponseDTO
+    public List<RankingDTO> findWorstMovieStudioDTO() {
+        return awardsRangeRepository.findWorstMovieStudioDTO();
+    }
+
+    public MaxMinProducersAwardsRangeResponseDTO findAwardsRangeProducer() {
+        List<RankingDTO> rankingProducersWithCalculatedPremiumRanges = returnRankingWithCalculatedPremiumRanges(findWorstMovieProducerDTO());
+        List<RankingDTO> minAwardsProducers = returnMinAwards(rankingProducersWithCalculatedPremiumRanges);
+        List<RankingDTO> maxAwardsProducers = returnMaxAwards(rankingProducersWithCalculatedPremiumRanges);
+        return MaxMinProducersAwardsRangeResponseDTO
                 .builder()
-                .min(mountAwardsRangeDTO(minAwardsProducers))
-                .max(mountAwardsRangeDTO(maxAwardsProducers))
+                .min(mountProducerAwardsRangeDTO(minAwardsProducers))
+                .max(mountProducerAwardsRangeDTO(maxAwardsProducers))
                 .build();
     }
 
-    private List<RankingProducerDTO> returnMaxAwardsProduces(List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges) {
-        if (CollectionUtils.isNotEmpty(rankingProducersWithCalculatedPremiumRanges)) {
-            Integer maxInterval = returnMaxInterval(rankingProducersWithCalculatedPremiumRanges);
-            return rankingProducersWithCalculatedPremiumRanges.stream()
+    public MaxMinStudiosAwardsRangeResponseDTO findAwardsRangeStudio() {
+        List<RankingDTO> rankingStudiosWithCalculatedPremiumRanges = returnRankingWithCalculatedPremiumRanges(findWorstMovieStudioDTO());
+        List<RankingDTO> minAwardsStudios = returnMinAwards(rankingStudiosWithCalculatedPremiumRanges);
+        List<RankingDTO> maxAwardsStudios = returnMaxAwards(rankingStudiosWithCalculatedPremiumRanges);
+        return MaxMinStudiosAwardsRangeResponseDTO
+                .builder()
+                .min(mountStudioAwardsRangeDTO(minAwardsStudios))
+                .max(mountStudioAwardsRangeDTO(maxAwardsStudios))
+                .build();
+    }
+
+    private List<RankingDTO> returnMaxAwards(List<RankingDTO> rankingWithCalculatedPremiumRanges) {
+        if (CollectionUtils.isNotEmpty(rankingWithCalculatedPremiumRanges)) {
+            Integer maxInterval = returnMaxInterval(rankingWithCalculatedPremiumRanges);
+            return rankingWithCalculatedPremiumRanges.stream()
                     .filter(i -> i.getInterval().equals(maxInterval)).collect(Collectors.toList());
         } else {
             return new ArrayList<>();
         }
     }
 
-    private List<RankingProducerDTO> returnMinAwardsProduces(List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges) {
-        if (CollectionUtils.isNotEmpty(rankingProducersWithCalculatedPremiumRanges)) {
-            Integer minInterval = returnMinInterval(rankingProducersWithCalculatedPremiumRanges);
-            return rankingProducersWithCalculatedPremiumRanges.stream()
+    private List<RankingDTO> returnMinAwards(List<RankingDTO> rankingWithCalculatedPremiumRanges) {
+        if (CollectionUtils.isNotEmpty(rankingWithCalculatedPremiumRanges)) {
+            Integer minInterval = returnMinInterval(rankingWithCalculatedPremiumRanges);
+            return rankingWithCalculatedPremiumRanges.stream()
                     .filter(i -> i.getInterval().equals(minInterval)).collect(Collectors.toList());
         } else {
             return new ArrayList<>();
         }
     }
 
-    private List<RankingProducerDTO> returnRankingProducersWithCalculatedPremiumRanges(List<RankingProducerDTO> rankingProducerDTOS) {
-        List<RankingProducerDTO> rankingProducersWithCalculatedPremiumRanges = new ArrayList<>();
-        rankingProducerDTOS.forEach(rankingProducer -> {
-            if (CollectionUtils.size(rankingProducer.getYears()) == RANGE_DELIMITER_AWARDS) {
-                rankingProducer.setInterval(returnInterval(rankingProducer.getYears()));
-                rankingProducersWithCalculatedPremiumRanges.add(rankingProducer);
-            } else if (CollectionUtils.size(rankingProducer.getYears()) > RANGE_DELIMITER_AWARDS) {
-                resolveRankingWithMoreThanTwoConsecutiveAward(rankingProducersWithCalculatedPremiumRanges, rankingProducer);
+    private List<RankingDTO> returnRankingWithCalculatedPremiumRanges(List<RankingDTO> rankingDTOS) {
+        List<RankingDTO> rankingWithCalculatedPremiumRanges = new ArrayList<>();
+        rankingDTOS.forEach(ranking -> {
+            if (CollectionUtils.size(ranking.getYears()) == RANGE_DELIMITER_AWARDS) {
+                ranking.setInterval(returnInterval(ranking.getYears()));
+                rankingWithCalculatedPremiumRanges.add(ranking);
+            } else if (CollectionUtils.size(ranking.getYears()) > RANGE_DELIMITER_AWARDS) {
+                resolveRankingWithMoreThanTwoConsecutiveAward(rankingWithCalculatedPremiumRanges, ranking);
             }
         });
-        return rankingProducersWithCalculatedPremiumRanges;
+        return rankingWithCalculatedPremiumRanges;
     }
 
-    private void resolveRankingWithMoreThanTwoConsecutiveAward(List<RankingProducerDTO> rankingProducerNormalizados, RankingProducerDTO rankingProducer) {
-        Iterator<Integer> years = rankingProducer.getYears().iterator();
+    private void resolveRankingWithMoreThanTwoConsecutiveAward(List<RankingDTO> rankings, RankingDTO ranking) {
+        Iterator<Integer> years = ranking.getYears().iterator();
         Integer previousWin = null;
         Integer followingWin;
         while (years.hasNext()) {
             followingWin = years.next();
             if (Objects.nonNull(previousWin)) {
-                RankingProducerDTO rankingProducerDTO = RankingProducerDTO
+                RankingDTO rankingDTO = RankingDTO
                         .builder()
-                        .name(rankingProducer.getName())
+                        .name(ranking.getName())
                         .years(Arrays.asList(previousWin, followingWin))
                         .build();
-                rankingProducerDTO.setInterval(returnInterval(rankingProducerDTO.getYears()));
-                rankingProducerNormalizados.add(rankingProducerDTO);
+                rankingDTO.setInterval(returnInterval(rankingDTO.getYears()));
+                rankings.add(rankingDTO);
             }
             previousWin = followingWin;
         }
     }
 
-    private List<AwardsRangeDTO> mountAwardsRangeDTO(List<RankingProducerDTO> rankingProducer) {
-        List<AwardsRangeDTO> minAwardsRange = new ArrayList<>();
-        rankingProducer.forEach(minRankingProduce -> minAwardsRange.add(AwardsRangeDTO
+    private List<ProducerAwardsRangeDTO> mountProducerAwardsRangeDTO(List<RankingDTO> rankingProducer) {
+        List<ProducerAwardsRangeDTO> minAwardsRange = new ArrayList<>();
+        rankingProducer.forEach(minRankingProduce -> minAwardsRange.add(ProducerAwardsRangeDTO
                 .builder()
                 .producer(minRankingProduce.getName())
                 .previousWin(minRankingProduce.getYears().get(0))
@@ -98,15 +111,27 @@ public class AwardsRangeService {
         return minAwardsRange;
     }
 
-    private Integer returnMinInterval(List<RankingProducerDTO> rankingProducerNormalizados) {
-        return rankingProducerNormalizados.stream()
-                .min(Comparator.comparing(RankingProducerDTO::getInterval))
+    private List<StudioAwardsRangeDTO> mountStudioAwardsRangeDTO(List<RankingDTO> rankingStudio) {
+        List<StudioAwardsRangeDTO> minAwardsRange = new ArrayList<>();
+        rankingStudio.forEach(minRankingProduce -> minAwardsRange.add(StudioAwardsRangeDTO
+                .builder()
+                .studio(minRankingProduce.getName())
+                .previousWin(minRankingProduce.getYears().get(0))
+                .followingWin(minRankingProduce.getYears().get(1))
+                .interval(minRankingProduce.getInterval())
+                .build()));
+        return minAwardsRange;
+    }
+
+    private Integer returnMinInterval(List<RankingDTO> rankings) {
+        return rankings.stream()
+                .min(Comparator.comparing(RankingDTO::getInterval))
                 .get().getInterval();
     }
 
-    private Integer returnMaxInterval(List<RankingProducerDTO> rankingProducerNormalizados) {
-        return rankingProducerNormalizados.stream()
-                .max(Comparator.comparing(RankingProducerDTO::getInterval))
+    private Integer returnMaxInterval(List<RankingDTO> rankings) {
+        return rankings.stream()
+                .max(Comparator.comparing(RankingDTO::getInterval))
                 .get().getInterval();
     }
 

@@ -30,7 +30,7 @@ public interface AwardsRangeResourceAPI {
             content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(
-                            ref = "MaxMinAwardsRangeResponseDTO"
+                            ref = "MaxMinProducersAwardsRangeResponseDTO"
                     )
             ),
             description = "Request executed successfully."
@@ -43,10 +43,11 @@ public interface AwardsRangeResourceAPI {
     Response findAwardsRangeProducer();
 
     @Operation(
-            description = "Essa rota serve apenas para indicar uma possível evolução futura da API. Onde seja possível também retornar\n" +
-                    "Studio com maior intervalo entre dois prêmios consecutivos. No momento essa rota não retornará dados.",
+            description = "Essa rota serve para obter o Studio com maior intervalo entre dois prêmios consecutivos, e o que\n" +
+                    "obteve dois prêmios mais rápido.",
             operationId = "awardsRangeResource.findAwardsRangeStudios",
-            summary = "Return Awards Range Studios.."
+            summary = "Obter o Studio com maior intervalo entre dois prêmios consecutivos, e o que\n" +
+                    "obteve dois prêmios mais rápido."
     )
     @APIResponse(
             name = "OK",
@@ -54,7 +55,7 @@ public interface AwardsRangeResourceAPI {
             content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(
-                            ref = "MaxMinAwardsRangeResponseDTO"
+                            ref = "MaxMinStudiosAwardsRangeResponseDTO"
                     )
             ),
             description = "Request executed successfully."
@@ -64,7 +65,5 @@ public interface AwardsRangeResourceAPI {
     @APIResponse(responseCode = "401", ref = "unauthorized")
     @APIResponse(responseCode = "403", ref = "forbiden")
     @APIResponse(responseCode = "500", ref = "internalError")
-        //TODO Essa rota serve apenas para indicar uma possível evolução futura da API. Onde seja possível também retornar
-        // o Studio com maior intervalo entre dois prêmios consecutivos. No momento essa rota não retornará dados.
     Response findAwardsRangeStudios();
 }

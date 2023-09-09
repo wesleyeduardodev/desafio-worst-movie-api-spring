@@ -11,19 +11,19 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(
-        description = "Object used to return Awards Range.",
-        name = "AwardsRangeDTO",
+        description = "Object used to return Studio Awards Range.",
+        name = "ProducerAwardsRangeDTO",
         type = SchemaType.OBJECT
 )
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class AwardsRangeDTO {
+public class StudioAwardsRangeDTO {
 
     @Schema(
-            description = "Producer name.",
+            description = "Studio name.",
             implementation = String.class,
             type = SchemaType.STRING
     )
-    private String producer;
+    private String studio;
 
     @Schema(
             implementation = Integer.class,
@@ -48,12 +48,12 @@ public class AwardsRangeDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AwardsRangeDTO that = (AwardsRangeDTO) o;
-        return producer.equals(that.producer) && interval.equals(that.interval) && previousWin.equals(that.previousWin) && followingWin.equals(that.followingWin);
+        StudioAwardsRangeDTO that = (StudioAwardsRangeDTO) o;
+        return studio.equals(that.studio) && interval.equals(that.interval) && previousWin.equals(that.previousWin) && followingWin.equals(that.followingWin);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(producer, interval, previousWin, followingWin);
+        return Objects.hash(studio, interval, previousWin, followingWin);
     }
 }

@@ -15,6 +15,6 @@ public class AwardsRangeResource implements AwardsRangeResourceAPI {
 
     @Override
     public Response findAwardsRangeStudios() {
-        return Response.ok().build();
+        return Response.ok(awardsRangeService.findAwardsRangeStudio()).build();
     }
 }

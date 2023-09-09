@@ -11,10 +11,10 @@ import java.util.List;
 @NoArgsConstructor
 @Schema(
         description = "Object used to return Maximum and Minimum Awards Range.",
-        name = "MaxMinAwardsRangeResponseDTO",
+        name = "MaxMinStudiosAwardsRangeResponseDTO",
         type = SchemaType.OBJECT
 )
-public class MaxMinAwardsRangeResponseDTO {
-    private List<AwardsRangeDTO> min;
-    private List<AwardsRangeDTO> max;
+public class MaxMinStudiosAwardsRangeResponseDTO {
+    private List<StudioAwardsRangeDTO> min;
+    private List<StudioAwardsRangeDTO> max;
 }
