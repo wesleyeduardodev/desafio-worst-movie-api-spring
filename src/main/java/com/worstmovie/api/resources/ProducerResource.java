@@ -3,6 +3,7 @@ import com.worstmovie.api.dto.response.ProducerResponseDTO;
 import com.worstmovie.api.dto.request.ProducerRequestDTO;
 import com.worstmovie.api.model.Producer;
 import com.worstmovie.api.service.ProducersService;
+import com.worstmovie.api.service.WorstMovieService;
 import com.worstmovie.api.utils.LinksUtils;
 import com.worstmovie.api.utils.ResponseMapperUtils;
 import jakarta.inject.Inject;
@@ -11,13 +12,15 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
-import org.jboss.resteasy.reactive.RestResponse;
-import java.util.Optional;
+import org.jboss.resteasy.reactive.RestResponse;import java.util.Optional;
 
 public class ProducerResource implements ProducerResourceAPI {
 
     @Inject
     ProducersService producersService;
+
+    @Inject
+    WorstMovieService worstMovieService;
 
     @Override
     public Response findAllProducers(@Context UriInfo uriInfo) {

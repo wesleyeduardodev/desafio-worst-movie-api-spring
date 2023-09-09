@@ -37,5 +37,11 @@ public class StudioResponseDTO {
             implementation = List.class,
             type = SchemaType.ARRAY
     )
+    private List<WorstMovieResponseDTO> worstMovies;
+
+    @Schema(
+            implementation = List.class,
+            type = SchemaType.ARRAY
+    )
     private List<LinkDTO> links;
 }
