@@ -125,9 +125,14 @@ sobre indicados e vencedores do referido prêmio.
 - O resultado pode ser verificado conforma imagem:
 - ![img_11.png](src/main/resources/readme/img_11-26.png)
 
-# Observações Gerais
+# Observações Gerais Importantes
 
-- As regras de desenvolvimento da API citam a criação de uma API RESTFUL, e por isso alguns endpoins adicionais foram criados para se aproximar desse padrão. Os endpoints adicionais são representados na imagem abaixo.
-- ![img_1.png](src/main/resources/readme/img_1-131.png)
+- As regras de desenvolvimento da API citam a criação de uma API RESTFUL, e por isso alguns endpoins adicionais foram criados para se aproximar desse padrão. Abaixo farei uma breve descrição sobre os recursos adicionais criados.
 - Os detalhes dos endpoints adicionais podem ser analisados no link do Swagger: http://localhost:8080/q/swagger-ui/
+- Após desenvolver a rota que retorna "O produtor com maior intervalo entre dois prêmios consecutivos, e o que obteve dois prêmios mais rápido (GET /api/v1/awardsrange/producers), tive a curiosiade de identificar também quais seriam os Studios com maior intervalo entre dois prêmios consecutivos, e o que
+  obteve dois prêmios mais rápido (GET /api/v1/awardsrange/studios. A lógica referente a essa rota de faixa de prêmios para studios foi criada com facilidade pois da forma que foi implementada é possível criar outras cenários de forma simples, como por exemplo: Quais seriam os piores Roteiristas premiados? E assim por diante. Essas 2 rotas são representadas conforme abaixo: 
+![img_1.png](src/main/resources/readme/img_10984.png)
+- Os recursos para Produtores, Studios e Piores Filmes contém as rotas para operações de CRUD. O objetivo aqui foi inserir característas de HATEOS nas rotas de listagem geral e busca por ID. Um resumo dessas rotas está conforme imagem abaixo:
+![img.png](src/main/resources/readme/img-696.png)
 - A implementaçãao do HATEOS foi realizada de forma básica, podendo ser melhorada conforme espeficiação presente na documentação do Quarkus: https://quarkus.io/guides/resteasy-reactive#web-links-support
+- IMPORTANTE! Operações realizadas nesses endpoints adicionais tais como update, creat e delete podem afetar os testes nos endpoints que retornam as faixas de prêmios, pois o cenário principal de testes solicitado no arquivo de especificações do desafio considera os dados presentes no arquivo CSV que foi lido ao iniciar a aplicação. Caso sejam adicionados/alterados/removidos dados, o teste sobre as faixas de prêmios devem ser realizados considerandos essas alterações. 
