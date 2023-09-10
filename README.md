@@ -82,7 +82,7 @@ sobre indicados e vencedores do referido prêmio.
 # Funcionamento do esquema de segurança nas requisições
 
 - Antes de explicar como testar as requisições que retornam a faixa de prêmio e entre outras, farei uma explicação básica do esquema de segurança adotado para essa API, pois alguns endpoints precisam que sejam informados dados de autenticação. 
-- O método de segurança adotado foi o basicAuth. Esse método exige que seja passado no Authorization Header da aplicação os dados de usuário e senha.
+- O método de segurança adotado foi o basicAuth. Esse método exige que seja passado no Authorization Header da requisição os dados de usuário e senha.
 - A definição de dados de usuário e senha foi definido no application.properties da seguinte forma:
 ![img.png](src/main/resources/readme/img-571.png)
 - Nesse caso temos um "Usuário fictício" chamado de "admin" e com senha de "admin". Além disso ele também possui um perfil(role) chamado de "admin". Esse perfil serve para indicar se determinado usuário possuí ou não autorização para acessar um endpoint.
@@ -100,7 +100,7 @@ sobre indicados e vencedores do referido prêmio.
 - A exibição do cadeado fechado não indica que os dados informados estão realmente válidos, pois caso tenha sido informado outros tipos de dados a requisição retornaria erro de autorização.
 - Após realizar essa configuraçao já é possível realizar requisições com segurança. Reforço que todas as rotas do tipo GET não precisam de dados de autenticação, mas as demais sim.
 - Nota: Em aplicações reais existem outras maneiras de configurar a parte de sugurança que são ainda mais seguras, como autenticação e autorização usando JWT em conjunto com um SSO, como por exemplo o Keycloak.
-- A configuração usada aqui foi a mai simples possível apenas para atender uma caraterisca basica para qualquer api, que é a segurança da mesma.
+- A configuração usada aqui foi a mais simples possível apenas para atender uma caraterisca basica para qualquer api, que é a segurança da mesma.
 - Para essa API, nenhuma configuração de CORS foi usada, tendo todas as requisições liberadas para qualquer cliente consumidor do serviço.
 - No caso do uso do Postman para ferramenta de testes de requisição, informe os dados de usuário e senha usando a seguinte configuração abaixo:
 ![img_6.png](src/main/resources/readme/img_6-577.png)
@@ -129,7 +129,7 @@ sobre indicados e vencedores do referido prêmio.
 - Outra maneira de testar o endpoint que retorna o objetivo em questão, é fazendo uma requisição usando o Postman. Link download: https://www.postman.com/downloads/
 - Para todos os testes explicados aqui por diante, leve em consideração sempre passar os dados de autenticação de usuário onde for necessário.
 - Inicialize a aplicação conforme já detalhado.
-- Após a instalação da ferramenta, abra e crie uma Requisição GET para realizar o teste. (Lembre de passar os dados de usupario e senha na aba Authorization) 
+- Após a instalação da ferramenta, abra e crie uma Requisição GET para realizar o teste. (Lembre de passar os dados de usuário e senha na aba Authorization) 
 - Utilize a seguinte URL para acessar o Endpoint: http://localhost:8080/api/v1/awardsrange/producers
 - Clique em Send para obter o resultado conforme abaixo
 - ![img_3.png](src/main/resources/readme/img_3-18.png)
@@ -147,13 +147,13 @@ sobre indicados e vencedores do referido prêmio.
 - O resultado dos testes é apresentado conforme imagem
 - ![img.png](src/main/resources/readme/img-2090.png)
 - Os testes presentes na classe AwardsRangeResourceTest testam se as rotas do AwardsRangeResourceAPI retornam requisição realizada com sucesso (status 200) ao acessar seus endpoints. Além disso também realizam testes comparando se os resultados das faixas de prêmios presentes no arquivo CSV importado ao iniciar a aplicaçao são iguais ao mocks que foram criados na classe para realizar essa comparação. Reforço que **alterações** no arquivo CSV tem grandes chances de provocar falhas nos testes dessa classe. Sabendo disso em seguinte irei explicar os testes na classes de AwardsRangeServiceTest, que possibilitam uma flexibilidade maior de testes.
-- Os testes presentes na classe AwardsRangeServiceTest fazem um mock de um rank de faixa de prêmios e compara o resulta com outro mock. Dessa forma podemos montar qualquer cenário de teste.
+- Os testes presentes na classe AwardsRangeServiceTest fazem um mock de um rank de faixa de prêmios e compara o resultado5 com outro mock. Dessa forma podemos montar qualquer cenário de teste.
 - Para executar o teste via IntelliJ IDEA, entre na classes de teste e clique no botão conforme imagem de exemplo:
 ![img_3.png](src/main/resources/readme/img_3-2093.png)
 - Para executar os testes via comando, abra o terminal do gitBash nas raiz do projeto execute o comando: **mvn clean install -DskipUnitTests**
 - O resultado pode ser verificado conforma imagem
 ![img_2.png](src/main/resources/readme/img_2-2092.png)
-- Os testes presentes no pacote security verificam se determinados endpoints estão acessíveis ou não dependendo da configuração de autenticaação repassada no teste da requisição.
+- Os testes presentes no pacote security verificam se determinados endpoints estão acessíveis ou não dependendo da configuração de autenticação repassada no teste da requisição.
 
 
 # Observações Gerais Importantes
@@ -163,7 +163,7 @@ sobre indicados e vencedores do referido prêmio.
 - Após desenvolver a rota que retorna "O produtor com maior intervalo entre dois prêmios consecutivos, e o que obteve dois prêmios mais rápido (GET /api/v1/awardsrange/producers), tive a curiosiade de identificar também quais seriam os Studios com maior intervalo entre dois prêmios consecutivos, e o que
   obteve dois prêmios mais rápido (GET /api/v1/awardsrange/studios. A lógica referente a essa rota de faixa de prêmios para studios foi criada com facilidade pois da forma que foi implementada é possível criar outras cenários de forma simples, como por exemplo: Quais seriam os piores Roteiristas premiados? E assim por diante. Essas 2 rotas são representadas conforme abaixo: 
 ![img_1.png](src/main/resources/readme/img_10984.png)
-- Os recursos para Produtores, Studios e Piores Filmes contém as rotas para operações de CRUD. O objetivo aqui foi inserir característas de HATEOS nas rotas de listagem geral e busca por ID. Um resumo dessas rotas está conforme imagem abaixo:
+- Os recursos para Produtores, Studios e Piores Filmes contém as rotas para operações de CRUD. O objetivo aqui foi inserir característas de HATEOAS nas rotas de listagem geral e busca por ID. Um resumo dessas rotas está conforme imagem abaixo:
 ![img.png](src/main/resources/readme/img-696.png)
-- A implementaçãao do HATEOS foi realizada de forma básica, podendo ser melhorada conforme espeficiação presente na documentação do Quarkus: https://quarkus.io/guides/resteasy-reactive#web-links-support
-- IMPORTANTE! Operações realizadas nesses endpoints adicionais tais como update, creat e delete podem afetar os testes nos endpoints que retornam as faixas de prêmios, pois o cenário principal de testes solicitado no arquivo de especificações do desafio considera os dados presentes no arquivo CSV que foi lido ao iniciar a aplicação. Caso sejam adicionados/alterados/removidos dados, o teste sobre as faixas de prêmios devem ser realizados considerandos essas alterações. 
+- A implementaçãao do HATEOAS foi realizada de forma básica, podendo ser melhorada conforme espeficiação presente na documentação do Quarkus: https://quarkus.io/guides/resteasy-reactive#web-links-support
+- IMPORTANTE! Operações realizadas nesses endpoints adicionais tais como update, create e delete podem afetar os testes nos endpoints que retornam as faixas de prêmios, pois o cenário principal de testes solicitado no arquivo de especificações do desafio considera os dados presentes no arquivo CSV que foi lido ao iniciar a aplicação. Caso sejam adicionados/alterados/removidos dados, o teste sobre as faixas de prêmios devem ser realizados considerandos essas alterações. 
