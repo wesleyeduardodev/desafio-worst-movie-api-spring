@@ -7,8 +7,11 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -53,8 +56,8 @@ public class AwardsRangeResourceTest {
                 .body()
                 .as(MaxMinProducersAwardsRangeResponseDTO.class);
         assertNotNull(maxMinProducersAwardsRange);
-        assertEquals(maxMinProducersAwardsRange.getMax(), maxMinProducersAwardsRangeMock.getMax());
         assertEquals(maxMinProducersAwardsRange.getMin(), maxMinProducersAwardsRangeMock.getMin());
+        assertEquals(maxMinProducersAwardsRange.getMax(), maxMinProducersAwardsRangeMock.getMax());
     }
 
     @Test
@@ -67,8 +70,9 @@ public class AwardsRangeResourceTest {
                 .body()
                 .as(MaxMinStudiosAwardsRangeResponseDTO.class);
         assertNotNull(maxMinStudiosAwardsRange);
+        List<StudioAwardsRangeDTO> min = maxMinStudiosAwardsRange.getMin().stream().sorted(Comparator.comparing(StudioAwardsRangeDTO::getStudio)).collect(Collectors.toList());
+        assertEquals(min, maxMinStudiosAwardsRangeMock.getMin());
         assertEquals(maxMinStudiosAwardsRange.getMax(), maxMinStudiosAwardsRangeMock.getMax());
-        assertEquals(maxMinStudiosAwardsRange.getMin(), maxMinStudiosAwardsRangeMock.getMin());
     }
 
     private static MaxMinProducersAwardsRangeResponseDTO getMockMaxMinProducersAwardsRange() {
@@ -82,14 +86,20 @@ public class AwardsRangeResourceTest {
     }
 
     private static MaxMinStudiosAwardsRangeResponseDTO getMockMaxMinStudiosAwardsRange() {
+
         StudioAwardsRangeDTO minRangerColumbiaStudio = buildSudio("COLUMBIA PICTURES", 1, 2017, 2018);
         StudioAwardsRangeDTO minRangerParamountStudio = buildSudio("PARAMOUNT PICTURES", 1, 2008, 2009);
         StudioAwardsRangeDTO minRangerParamountStudio2 = buildSudio("PARAMOUNT PICTURES", 1, 2009, 2010);
         StudioAwardsRangeDTO minRangerWarnerBrosStudio = buildSudio("WARNER BROS.", 1, 1999, 2000);
+
+        List<StudioAwardsRangeDTO> minRangesProducers = Stream.of(minRangerColumbiaStudio, minRangerParamountStudio, minRangerParamountStudio2, minRangerWarnerBrosStudio)
+                .sorted(Comparator.comparing(StudioAwardsRangeDTO::getStudio))
+                .collect(Collectors.toList());
+
         StudioAwardsRangeDTO maxRangerParamountStudio = buildSudio("PARAMOUNT PICTURES", 15, 1993, 2008);
         return MaxMinStudiosAwardsRangeResponseDTO
                 .builder()
-                .min(Arrays.asList(minRangerColumbiaStudio, minRangerParamountStudio, minRangerParamountStudio2, minRangerWarnerBrosStudio))
+                .min(minRangesProducers)
                 .max(Collections.singletonList(maxRangerParamountStudio))
                 .build();
     }
