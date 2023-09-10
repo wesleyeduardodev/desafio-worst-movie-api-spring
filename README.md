@@ -13,8 +13,8 @@ sobre indicados e vencedores do referido prêmio.
 - Ao iniciar a aplicação, o arquivo CSV presente no diretório src/main/resources/files/movielist.csv é lido, processado e seus dados são armazenados no banco de dados.
 - Utilização de SGBD embarcado H2
 - Documentação com Swagger
-- Disponibilização de rota para obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que
-  obteve dois prêmios mais rápido.
+- Autenticação e Autorização de requisições usando método de autenticação básica. (Será detalhado mais a frente) 
+- Disponibilização de rota para obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que obteve dois prêmios mais rápido.
 
 
 # Tecnologias necessárias para execução do projeto
@@ -29,7 +29,7 @@ sobre indicados e vencedores do referido prêmio.
 - Acesse as configurações de variáveis de ambiente
 - ![img_9.png](src/main/resources/readme/img_9.png)
 - ![img_10.png](src/main/resources/readme/img_10.png)
-- Na parte de variáveis do sistema, clique em Novo e configure os diretórios da seguinte forma:
+- Na parte de variáveis do sistema, clique em Novo e configure os diretórios onde estão o JAVA e o MAVEN da seguinte forma:
 - ![img_11.png](src/main/resources/readme/img_11.png)
 - Faça uma edição no Path para configurar o bin:
 - ![img_12.png](src/main/resources/readme/img_12.png)
@@ -39,8 +39,8 @@ sobre indicados e vencedores do referido prêmio.
 - ![img_14.png](src/main/resources/readme/img_14.png)
 - Para testar a configuração do Maven abra o cmd e digite: **mvn**
 - ![img_15.png](src/main/resources/readme/img_15.png)
-- Agora vamos executar alguns comandos para executar a aplicação
-- Abra o diretório raiz do projeto clonado e abra como um terminal do GitBash por exemplo. Link GitBash: https://git-scm.com/downloads
+- Agora vamos executar alguns comandos para iniciar a aplicação
+- Abra o diretório raiz do projeto clonado e abra como um terminal do GitBash por exemplo. Link downnload GitBash: https://git-scm.com/downloads
 - ![img.png](src/main/resources/readme/img-01.png)
 - ![img_3.png](src/main/resources/readme/img_3-3.png)
 - Execute o comando **mvn clean install** para gerar o build completo da aplicação, inclusive com os testes.
@@ -64,7 +64,7 @@ sobre indicados e vencedores do referido prêmio.
 - ![img_1.png](src/main/resources/readme/img_1.png)
 - Para configurar o Java selecione a opção File -> Project Structure
 - ![img_2.png](src/main/resources/readme/img_2.png)
-- Na aba project, opção SDK procure e selecione a SDK do Java 11
+- Na aba project, opção SDK procure e selecione a SDK do Java 11 presente no diretório da sua máquina
 - ![img_3.png](src/main/resources/readme/img_3.png)
 - Para configurar o maven, selecione a opção File -> Settings
 - ![img_4.png](src/main/resources/readme/img_4.png)
@@ -78,30 +78,62 @@ sobre indicados e vencedores do referido prêmio.
 - Link do Swagger http://localhost:8080/q/swagger-ui/
 - ![img_1.png](src/main/resources/readme/img_1-11.png) 
 
+# Funcionamento do esquema de segurança nas requisições
+
+- Antes de explicar como testar as requisições que retornam a faixa de prêmio e entre outras, farei uma explicação básica do esquema de segurança adotado para essa API, pois alguns endpoints precisam que sejam informados dados de autenticação. 
+- O método de segurança adotado foi o basicAuth. Esse método exige que seja passado no Authorization Header da aplicação os dados de usuário e senha.
+- A definição de dados de usuário e senha foi definido no application.properties da seguinte forma:
+![img.png](src/main/resources/readme/img-571.png)
+- Nesse caso temos um "Usuário fictício" chamado de "admin" e com senha de "admin". Além disso ele também possui um perfil(role) chamado de "admin". Esse perfil serve para indicar se determinado usuário possuí ou não autorização para acessar um endpoint.
+- **Todas as rotas da API do tipo GET estão livres** da necessidade de informar dados de usuário e senha. Isso foi definido usando a anotação @PermitAll nesses endpoints.
+- Para as **rotas que realizam operações de create/update e delete**, a anotação @RolesAllowed("admin") foi usada para que exiga que seja passado no Authorization Header os dados de usuário e senha. Além disso essa anotação valida se o usuário tem a role "admin". Pois caso o valor fosse diferente do cadastrado no application.properties para o user "admin"", a requisição retornaria 403 forbidden. Caso seja passado um usuário senha diferente de "admin" e "admin", respectivamente, a requisição retornará 401 unauthorized.
+- Para testar uma requição em um endpoint seguro usando o Swagger, faremos da seguinte forma: Após iniciar a aplicação, acesso o Swagger no link: http://localhost:8080/q/swagger-ui/
+![img_2.png](src/main/resources/readme/img_2-573.png)
+- Observe acima que Swagger já indica quais os endpoints tem caracteristicas de autenticação
+- Ao clicar no símbolo do cadeado será exibido a seguinte tela:
+- ![img_3.png](src/main/resources/readme/img_3-574.png)
+- Nos campos Username e Password informe "admin", depois clique em Authorize, ficando da seguinte forma:
+- ![img_4.png](src/main/resources/readme/img_4-575.png)
+- Após isso é só fechar ver que os cadeados mudaram sua forma visual.
+- ![img_5.png](src/main/resources/readme/img_5-576.png)
+- A exibição do cadeado fechado não indica que os dados informados estão realmente válidos, pois caso tenha sido informado outros tipos de dados a requisição retornaria erro de autorização.
+- Após realizar essa configuraçao já é possível realizar requisições com segurança. Reforço que todas as rotas do tipo GET não precisam de dados de autenticação, mas as demais sim.
+- Nota: Em aplicações reais existem outras maneiras de configurar a parte de sugurança que são ainda mais seguras, como autenticação e autorização usando JWT em conjunto com um SSO, como por exemplo o Keycloak.
+- A configuração usada aqui foi a mai simples possível apenas para atender uma caraterisca basica para qualquer api, que é a segurança da mesma.
+- Para essa API, nenhuma configuração de CORS foi usada, tendo todas as requisições liberadas para qualquer cliente consumidor do serviço.
+- No caso do uso do Postman para ferramenta de testes de requisição, informe os dados de usuário e senha usando a seguinte configuração abaixo:
+![img_6.png](src/main/resources/readme/img_6-577.png)
 
 # Passos para retorna faixa de prêmio entre os produtores (Teste com Swagger).
 
-- O resultado do teste considera os dados importados do arquivo CSV presente no diretório src/main/resources/files/movielist.csv.
+- Para todos os testes explicados aqui por diante, leve em consideração sempre passar os dados de autenticação de usuário onde for necessário.
+- O resultado do teste referente a faixa de prêmios considera os dados importados do arquivo CSV presente no diretório src/main/resources/files/movielist.csv.
 - Alterações de dados realizados após essa importação, através de manipulação de dados no banco deve ser feito com atenção, pois pode alterar a perspectiva do teste.
 - Para gerar outros cenários de testes podem ser feitas várias alterações no arquivo CSV desde que não seja alterado a estruta adequada para um arquivo CSV e nem seja removido os títulos que representam as colunas do CSV. (year;title;studios;producers;winner). Para esses cenários de errros de importação, um log será exibido no console com a característica do erro.
 - Inicialize a aplicação conforme já detalhado.
 - Acesse o Swagger através do link: http://localhost:8080/q/swagger-ui/
 - Procure pelo menu Awards Range Resource
 - O menu irá conter a esspecificação da rota a ser usada para retornar o objetivo em questão. Clique na opção "Try it out", conforme imagem:
-- ![img.png](src/main/resources/readme/img-15.png)
+![img_7.png](src/main/resources/readme/img_7-578.png)
 - Agora clique em "Execute"
-- ![img_1.png](src/main/resources/readme/img_1-16.png)
+![img_8.png](src/main/resources/readme/img_8-579.png)
 - O resultado é mostrado conforme imagem:
-- ![img_2.png](src/main/resources/readme/img_2-17.png)
+![img_9.png](src/main/resources/readme/img_9-580.png)
+- Veja que tivemos como resultado que o produtor JOEL SILVER foi o que obteve o dois prêmios mais rápido, e o produtor "MATTHEW VAUGHN foi o que teve maior intervalo entre dois prêmios consecutivos
+- Reforço que caso a aplicação seja iniciada com alterações de dados no arquivo CSV, e resultado do teste terá grandes chances de serem diferentes e isso deve ser levando em consideração.
+
 
 # Passos para retornar a faixa de prêmio entre os produtores (Teste com Postman).
 
-- Inicialize a aplicação conforme já detalhado.
 - Outra maneira de testar o endpoint que retorna o objetivo em questão, é fazendo uma requisição usando o Postman. Link download: https://www.postman.com/downloads/
-- Após a instalação da ferramenta, abra e crie uma Requisição GET para realizar o teste.
+- Para todos os testes explicados aqui por diante, leve em consideração sempre passar os dados de autenticação de usuário onde for necessário.
+- Inicialize a aplicação conforme já detalhado.
+- Após a instalação da ferramenta, abra e crie uma Requisição GET para realizar o teste. (Lembre de passar os dados de usupario e senha na aba Authorization) 
 - Utilize a seguinte URL para acessar o Endpoint: http://localhost:8080/api/v1/awardsrange/producers
 - Clique em Send para obter o resultado conforme abaixo
 - ![img_3.png](src/main/resources/readme/img_3-18.png)
+- Veja que tivemos como resultado que o produtor JOEL SILVER foi o que obteve o dois prêmios mais rápido, e o produtor "MATTHEW VAUGHN foi o que teve maior intervalo entre dois prêmios consecutivos
+- Reforço que caso a aplicação seja iniciada com alterações de dados no arquivo CSV, e resultado do teste terá grandes chances de serem diferentes e isso deve ser levando em consideração.
 
 # Passos para executar os testes de integração
 
@@ -113,9 +145,8 @@ sobre indicados e vencedores do referido prêmio.
 - ![img_7.png](src/main/resources/readme/img_7-22.png)
 - O resulto dos testes é apresentado conforme imagem
 - ![img.png](src/main/resources/readme/img-2090.png)
-- Os testes presentes na classe AwardsRangeResourceTest testam se as rotas do AwardsRangeResourceAPI retornam requisição realizada com sucesso (status 200) ao acessar seus endpoints. Além disso também realizam testes comparando se os resultados das faixas de prêmios presentes no arquivo CSV importado ao iniciar a aplicaççao são iguais ao mocks que foram criados na classe para realizar essa comparação.
-- Os testes presentes na classe AwardsRangeServiceTest faz um mock de um rank de faixa de prêmios e compara o resulta com outro mock. 
-- Importante reforçar que para esse teste é considerado os dados do CSV presente no diretório src/main/resources/files/movielist **SEM ALTERAÇÕES**. Caso os dados do CSV sejam alterados o mock de retorno de dados também deve ser alterado conforme o esperado:
+- Os testes presentes na classe AwardsRangeResourceTest testam se as rotas do AwardsRangeResourceAPI retornam requisição realizada com sucesso (status 200) ao acessar seus endpoints. Além disso também realizam testes comparando se os resultados das faixas de prêmios presentes no arquivo CSV importado ao iniciar a aplicaçao são iguais ao mocks que foram criados na classe para realizar essa comparação. Reforço que **alterações** no arquivo CSV tem grandes chances de provocar falhas nos testes dessa classe. Sabendo disso em seguinte irei explicar os testes na classes de AwardsRangeServiceTest, que possibilitam uma flexibilidade maior de testes.
+- Os testes presentes na classe AwardsRangeServiceTest fazem um mock de um rank de faixa de prêmios e compara o resulta com outro mock. Dessa forma podemos montar qualquer cenário de teste.
 - Para executar o teste via IntelliJ IDEA, entre na classes de teste e clique no botão conforme imagem de exemplo:
 ![img_3.png](src/main/resources/readme/img_3-2093.png)
 - Para executar os testes via comando, abra o terminal do gitBash nas raiz do projeto execute o comando: **mvn clean install -DskipUnitTests**
