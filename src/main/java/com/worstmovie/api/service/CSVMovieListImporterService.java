@@ -30,12 +30,10 @@ public class CSVMovieListImporterService {
 
     private HashMap<String, Producer> mapSavedProducers;
     private HashMap<String, Studio> mapSavedStudios;
-    private HashMap<String, WorstMovie> mapSavedWorstMovie;
 
     public void csvMovieListImporter(Iterable<CSVRecord> csvMovieListRecords) {
         mapSavedProducers = new HashMap<>();
         mapSavedStudios = new HashMap<>();
-        mapSavedWorstMovie = new HashMap<>();
         for (CSVRecord csvMovieRecord : csvMovieListRecords) {
             WorstMovie worstMovie = worstMovieService.returnWorstMovieFromCSVRecord(csvMovieRecord);
             List<Producer> producers = producersService.returnProducersFromCSVRecord(csvMovieRecord);
@@ -53,18 +51,12 @@ public class CSVMovieListImporterService {
     }
 
     private WorstMovie saveWorstMovie(WorstMovie worstMovieRecord) {
-        WorstMovie worstMovie = mapSavedWorstMovie.get(worstMovieRecord.getTitle());
-        if (Objects.isNull(worstMovie)) {
-            worstMovie = WorstMovie
-                    .builder()
-                    .year(worstMovieRecord.getYear())
-                    .title(worstMovieRecord.getTitle())
-                    .winner(worstMovieRecord.isWinner())
-                    .build();
-            worstMovieService.saveWorstMovie(worstMovie);
-            mapSavedWorstMovie.put(worstMovie.getTitle(), worstMovie);
-        }
-        return worstMovie;
+        return worstMovieService.saveWorstMovie(WorstMovie
+                .builder()
+                .year(worstMovieRecord.getYear())
+                .title(worstMovieRecord.getTitle())
+                .winner(worstMovieRecord.isWinner())
+                .build());
     }
 
     private List<Producer> saveProducers(List<Producer> producersRecord) {
