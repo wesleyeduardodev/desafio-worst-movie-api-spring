@@ -144,7 +144,7 @@ sobre indicados e vencedores do referido prêmio.
 - Clique em "VISIT THE DEV UI"
 - Selecione a aba "Continuos Testing" e clique em Start
 - ![img_7.png](src/main/resources/readme/img_7-22.png)
-- O resulto dos testes é apresentado conforme imagem
+- O resultado dos testes é apresentado conforme imagem
 - ![img.png](src/main/resources/readme/img-2090.png)
 - Os testes presentes na classe AwardsRangeResourceTest testam se as rotas do AwardsRangeResourceAPI retornam requisição realizada com sucesso (status 200) ao acessar seus endpoints. Além disso também realizam testes comparando se os resultados das faixas de prêmios presentes no arquivo CSV importado ao iniciar a aplicaçao são iguais ao mocks que foram criados na classe para realizar essa comparação. Reforço que **alterações** no arquivo CSV tem grandes chances de provocar falhas nos testes dessa classe. Sabendo disso em seguinte irei explicar os testes na classes de AwardsRangeServiceTest, que possibilitam uma flexibilidade maior de testes.
 - Os testes presentes na classe AwardsRangeServiceTest fazem um mock de um rank de faixa de prêmios e compara o resulta com outro mock. Dessa forma podemos montar qualquer cenário de teste.
@@ -153,6 +153,7 @@ sobre indicados e vencedores do referido prêmio.
 - Para executar os testes via comando, abra o terminal do gitBash nas raiz do projeto execute o comando: **mvn clean install -DskipUnitTests**
 - O resultado pode ser verificado conforma imagem
 ![img_2.png](src/main/resources/readme/img_2-2092.png)
+- Os testes presentes no pacote security verificam se determiados endpoints estão acessíveis ou não dependendo da configuração de autenticaação repassada no teste da requisição.
 
 
 # Observações Gerais Importantes
