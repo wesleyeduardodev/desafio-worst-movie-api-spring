@@ -15,6 +15,7 @@ sobre indicados e vencedores do referido prêmio.
 - Documentação com Swagger
 - Autenticação e Autorização de requisições usando método de autenticação básica. (Será detalhado mais a frente) 
 - Disponibilização de rota para obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que obteve dois prêmios mais rápido.
+- As especificações do teste técnico apresentado no documento src/main/resources/files/Especificação Backend.pdf citam a criação de uma API API RESTful. Portando, algumas rotas adicionais foram criadas para simular a aproximação desse padrão solicitado. No decorrer da leitura desse documento será explicado do que se trata essas rotas adicionais.
 
 
 # Tecnologias necessárias para execução do projeto
