@@ -1,5 +1,4 @@
 package com.worstmovie.api.service;
-import com.worstmovie.api.cache.CacheStoreProducers;
 import com.worstmovie.api.dto.response.ProducerResponseDTO;
 import com.worstmovie.api.dto.request.ProducerRequestDTO;
 import com.worstmovie.api.dto.response.WorstMovieResponseDTO;
@@ -13,7 +12,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.csv.CSVRecord;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -22,14 +20,8 @@ public class ProducersService {
     @Inject
     ProducersRepository producersRepository;
 
-    @Inject
-    CacheStoreProducers cacheStoreProducers;
-
-    public Producer saveProducer(String name) {
-        return producersRepository.save(Producer
-                .builder()
-                .name(name)
-                .build());
+    public Producer saveProducer(Producer producer) {
+        return producersRepository.save(producer);
     }
 
     public void deleteProducers(Long id) {
@@ -40,24 +32,6 @@ public class ProducersService {
         Producer producer = Producer.findById(id);
         producer.setName(producersRequestDTO.getName());
         producersRepository.save(producer);
-    }
-
-    public List<Producer> saveAll(List<Producer> producers) {
-        List<Producer> producerSaveds = new ArrayList<>();
-        producers.forEach(producer -> {
-            Producer producerCache = cacheStoreProducers.storeProducers().get(producer.getName());
-            if (Objects.nonNull(producerCache)) {
-                producerSaveds.add(producerCache);
-            } else {
-                producerCache = producersRepository.findByName(producer.getName()).orElse(null);
-                if (Objects.isNull(producerCache)) {
-                    producerCache = producersRepository.save(producer);
-                }
-                cacheStoreProducers.storeProducers().add(producerCache.getName(), producerCache);
-                producerSaveds.add(producerCache);
-            }
-        });
-        return producerSaveds;
     }
 
     public List<ProducerResponseDTO> toProducersResponseDTO(List<Producer> producers, String pathRequest) {

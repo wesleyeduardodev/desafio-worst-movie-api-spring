@@ -38,7 +38,7 @@ public class StudioResource implements StudioResourceAPI {
 
     @Override
     public Response saveStudio(@Context UriInfo uriInfo, StudioRequestDTO studioRequestDTO) {
-        Studio studio = studiosService.saveStudio(studioRequestDTO.getName());
+        Studio studio = studiosService.saveStudio(Studio.builder().name(studioRequestDTO.getName()).build());
         StudioResponseDTO studioResponse = StudioResponseDTO
                 .builder()
                 .id(studio.getId())

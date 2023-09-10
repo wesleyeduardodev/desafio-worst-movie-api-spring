@@ -1,5 +1,4 @@
 package com.worstmovie.api.service;
-import com.worstmovie.api.cache.CacheStoreStudios;
 import com.worstmovie.api.dto.response.StudioResponseDTO;
 import com.worstmovie.api.dto.request.StudioRequestDTO;
 import com.worstmovie.api.dto.response.WorstMovieResponseDTO;
@@ -13,7 +12,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.csv.CSVRecord;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -22,18 +20,12 @@ public class StudiosService {
     @Inject
     StudiosRepository studiosRepository;
 
-    @Inject
-    CacheStoreStudios cacheStoreStudios;
-
     public List<Studio> findAllStudios() {
         return Studio.listAll();
     }
 
-    public Studio saveStudio(String name) {
-        return studiosRepository.save(Studio
-                .builder()
-                .name(name)
-                .build());
+    public Studio saveStudio(Studio studio) {
+        return studiosRepository.save(studio);
     }
 
     public void deleteStudio(Long id) {
@@ -54,24 +46,6 @@ public class StudiosService {
                 .worstMovies(returnWorstMovieProducer(studio))
                 .links(LinksUtils.generateLinks(path, null))
                 .build();
-    }
-
-    public List<Studio> saveAll(List<Studio> studios) {
-        List<Studio> producerSaveds = new ArrayList<>();
-        studios.forEach(producer -> {
-            Studio studioCache = cacheStoreStudios.storeStudios().get(producer.getName());
-            if (Objects.nonNull(studioCache)) {
-                producerSaveds.add(studioCache);
-            } else {
-                studioCache = studiosRepository.findByName(producer.getName()).orElse(null);
-                if (Objects.isNull(studioCache)) {
-                    studioCache = studiosRepository.save(producer);
-                }
-                cacheStoreStudios.storeStudios().add(studioCache.getName(), studioCache);
-                producerSaveds.add(studioCache);
-            }
-        });
-        return producerSaveds;
     }
 
     public List<StudioResponseDTO> studiosEntityToStudiosResponseDTO(List<Studio> studios, String path) {
