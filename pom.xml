@@ -102,15 +102,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.mapstruct</groupId>
-      <artifactId>mapstruct</artifactId>
-      <version>1.5.3.Final</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>31.1-jre</version>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-elytron-security-properties-file</artifactId>
     </dependency>
   </dependencies>
   <build>

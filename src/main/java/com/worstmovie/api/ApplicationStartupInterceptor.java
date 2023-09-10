@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @ApplicationScoped
 @Slf4j
-public class AppLifecycleBean {
+public class ApplicationStartupInterceptor {
 
     private static final String PATH_FILE_CSV = "csv.file.path";
 

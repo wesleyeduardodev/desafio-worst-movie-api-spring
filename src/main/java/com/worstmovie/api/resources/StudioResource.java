@@ -5,6 +5,8 @@ import com.worstmovie.api.model.Studio;
 import com.worstmovie.api.service.StudiosService;
 import com.worstmovie.api.utils.LinksUtils;
 import com.worstmovie.api.utils.ResponseMapperUtils;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -20,11 +22,13 @@ public class StudioResource implements StudioResourceAPI {
     StudiosService studiosService;
 
     @Override
+    @PermitAll
     public Response findAllStudios(@Context UriInfo uriInfo) {
         return Response.ok(studiosService.studiosEntityToStudiosResponseDTO(studiosService.findAllStudios(), uriInfo.getAbsolutePath().toString())).build();
     }
 
     @Override
+    @PermitAll
     public Response findSudioById(@Context UriInfo uriInfo, @PathParam("id") Long id) {
         Optional<Studio> studio = Studio.findByIdOptional(id);
         Response response;
@@ -37,6 +41,7 @@ public class StudioResource implements StudioResourceAPI {
     }
 
     @Override
+    @RolesAllowed("admin")
     public Response saveStudio(@Context UriInfo uriInfo, StudioRequestDTO studioRequestDTO) {
         Studio studio = studiosService.saveStudio(Studio.builder().name(studioRequestDTO.getName()).build());
         StudioResponseDTO studioResponse = StudioResponseDTO
@@ -49,6 +54,7 @@ public class StudioResource implements StudioResourceAPI {
     }
 
     @Override
+    @RolesAllowed("admin")
     public Response updateStudio(@PathParam("id") Long id, StudioRequestDTO studioRequestDTO) {
         Optional<Studio> studio = Studio.findByIdOptional(id);
         Response response;
@@ -63,6 +69,7 @@ public class StudioResource implements StudioResourceAPI {
 
     @Override
     @Transactional
+    @RolesAllowed("admin")
     public Response deleteStudio(@PathParam("id") Long id) {
         Optional<Studio> studio = Studio.findByIdOptional(id);
         Response response;

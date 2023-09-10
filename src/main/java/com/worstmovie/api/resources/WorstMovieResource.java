@@ -5,6 +5,8 @@ import com.worstmovie.api.model.WorstMovie;
 import com.worstmovie.api.service.WorstMovieService;
 import com.worstmovie.api.utils.LinksUtils;
 import com.worstmovie.api.utils.ResponseMapperUtils;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Context;
@@ -18,11 +20,14 @@ public class WorstMovieResource implements WorstMovieResourceAPI {
     @Inject
     WorstMovieService worstMovieService;
 
+    @Override
+    @PermitAll
     public Response findAllWorstMovies(@Context UriInfo uriInfo) {
         return Response.ok(worstMovieService.toWorstMoviesResponseDTO(worstMovieService.findAllWorstMovies(), uriInfo.getAbsolutePath().toString())).build();
     }
 
     @Override
+    @PermitAll
     public Response findWorstMovieById(UriInfo uriInfo, Long id) {
         Optional<WorstMovie> worstMovie = WorstMovie.findByIdOptional(id);
         Response response;
@@ -35,6 +40,7 @@ public class WorstMovieResource implements WorstMovieResourceAPI {
     }
 
     @Override
+    @RolesAllowed("admin")
     public Response saveWorstMovie(UriInfo uriInfo, WorstMovieRequestDTO worstMovieRequestDTO) {
         WorstMovie worstMovie = worstMovieService.saveWorstMovie(worstMovieRequestDTO.getYear(), worstMovieRequestDTO.getTitle(), worstMovieRequestDTO.getWinner());
         WorstMovieResponseDTO worstMovieResponseDTO = WorstMovieResponseDTO
@@ -49,6 +55,7 @@ public class WorstMovieResource implements WorstMovieResourceAPI {
     }
 
     @Override
+    @RolesAllowed("admin")
     public Response updateWorstMovie(Long id, WorstMovieRequestDTO worstMovieRequestDTO) {
         Optional<WorstMovie> worstMovie = WorstMovie.findByIdOptional(id);
         Response response;
@@ -63,6 +70,7 @@ public class WorstMovieResource implements WorstMovieResourceAPI {
 
     @Override
     @Transactional
+    @RolesAllowed("admin")
     public Response deleteWorstMovie(Long id) {
         Optional<WorstMovie> worstMovie = WorstMovie.findByIdOptional(id);
         Response response;

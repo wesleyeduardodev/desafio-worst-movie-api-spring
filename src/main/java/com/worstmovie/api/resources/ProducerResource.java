@@ -5,6 +5,8 @@ import com.worstmovie.api.model.Producer;
 import com.worstmovie.api.service.ProducersService;
 import com.worstmovie.api.utils.LinksUtils;
 import com.worstmovie.api.utils.ResponseMapperUtils;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -20,11 +22,13 @@ public class ProducerResource implements ProducerResourceAPI {
     ProducersService producersService;
 
     @Override
+    @PermitAll
     public Response findAllProducers(@Context UriInfo uriInfo) {
         return Response.ok(producersService.toProducersResponseDTO(Producer.listAll(), uriInfo.getAbsolutePath().toString())).build();
     }
 
     @Override
+    @PermitAll
     public Response findProducerById(@Context UriInfo uriInfo, @PathParam("id") Long id) {
         Optional<Producer> producer = Producer.findByIdOptional(id);
         Response response;
@@ -37,6 +41,7 @@ public class ProducerResource implements ProducerResourceAPI {
     }
 
     @Override
+    @RolesAllowed("admin")
     public Response saveProducer(@Context UriInfo uriInfo, ProducerRequestDTO producersRequestDTO) {
         Producer producer = producersService.saveProducer(Producer.builder().name(producersRequestDTO.getName()).build());
         ProducerResponseDTO producerResponseDTO = ProducerResponseDTO
@@ -49,6 +54,7 @@ public class ProducerResource implements ProducerResourceAPI {
     }
 
     @Override
+    @RolesAllowed("admin")
     public Response updateProducer(@PathParam("id") Long id, ProducerRequestDTO producersRequestDTO) {
         Optional<Producer> producer = Producer.findByIdOptional(id);
         Response response;
@@ -63,6 +69,7 @@ public class ProducerResource implements ProducerResourceAPI {
 
     @Override
     @Transactional
+    @RolesAllowed("admin")
     public Response deleteProducer(@PathParam("id") Long id) {
         Optional<Producer> producer = Producer.findByIdOptional(id);
         Response response;
