@@ -11,12 +11,15 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirements;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 @Path("/v1/worstmovies")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Tag(name = "WorstMovie Resources", description = "Routes used to manipulate WorstMovie data.")
+@SecurityRequirements(value = {@SecurityRequirement(name = "basicAuth")})
 public interface WorstMovieResourceAPI {
 
     @Operation(
@@ -84,7 +87,7 @@ public interface WorstMovieResourceAPI {
     @APIResponse(responseCode = "401", ref = "unauthorized")
     @APIResponse(responseCode = "403", ref = "forbiden")
     @APIResponse(responseCode = "500", ref = "internalError")
-    Response saveWorstMovie(@Context UriInfo uriInfo,@Valid WorstMovieRequestDTO worstMovieRequestDTO);
+    Response saveWorstMovie(@Context UriInfo uriInfo, @Valid WorstMovieRequestDTO worstMovieRequestDTO);
 
     @PUT
     @Path("/{id}")
@@ -104,7 +107,7 @@ public interface WorstMovieResourceAPI {
     @APIResponse(responseCode = "403", ref = "forbiden")
     @APIResponse(responseCode = "404", ref = "notFound")
     @APIResponse(responseCode = "500", ref = "internalError")
-    Response updateWorstMovie(@PathParam("id") Long id,@Valid  WorstMovieRequestDTO worstMovieRequestDTO);
+    Response updateWorstMovie(@PathParam("id") Long id, @Valid WorstMovieRequestDTO worstMovieRequestDTO);
 
     @DELETE
     @Path("/{id}")

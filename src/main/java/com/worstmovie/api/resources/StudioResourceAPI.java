@@ -11,12 +11,15 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirements;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 @Path("/v1/studios")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Tag(name = "Studio Resources", description = "Routes used to manipulate studio data.")
+@SecurityRequirements(value = {@SecurityRequirement(name = "basicAuth")})
 public interface StudioResourceAPI {
 
     @Operation(
@@ -89,7 +92,7 @@ public interface StudioResourceAPI {
     @APIResponse(responseCode = "401", ref = "unauthorized")
     @APIResponse(responseCode = "403", ref = "forbiden")
     @APIResponse(responseCode = "500", ref = "internalError")
-    Response saveStudio(@Context UriInfo uriInfo,@Valid StudioRequestDTO studioRequestDTO);
+    Response saveStudio(@Context UriInfo uriInfo, @Valid StudioRequestDTO studioRequestDTO);
 
     @PUT
     @Path("/{id}")
@@ -109,7 +112,7 @@ public interface StudioResourceAPI {
     @APIResponse(responseCode = "403", ref = "forbiden")
     @APIResponse(responseCode = "404", ref = "notFound")
     @APIResponse(responseCode = "500", ref = "internalError")
-    Response updateStudio(@PathParam("id") Long id,@Valid StudioRequestDTO studioRequestDTO);
+    Response updateStudio(@PathParam("id") Long id, @Valid StudioRequestDTO studioRequestDTO);
 
 
     @DELETE
