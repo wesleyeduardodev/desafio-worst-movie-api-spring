@@ -24,11 +24,11 @@ public class ProducersService {
         return producersRepository.save(producer);
     }
 
-    public void deleteProducers(Long id) {
+    public void deleteProducer(Long id) {
         Producer.deleteById(id);
     }
 
-    public void updateProducers(Long id, ProducerRequestDTO producersRequestDTO) {
+    public void updateProducer(Long id, ProducerRequestDTO producersRequestDTO) {
         Producer producer = Producer.findById(id);
         producer.setName(producersRequestDTO.getName());
         producersRepository.save(producer);

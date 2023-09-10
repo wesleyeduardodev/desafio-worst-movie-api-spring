@@ -24,7 +24,7 @@ public class StudioResource implements StudioResourceAPI {
     @Override
     @PermitAll
     public Response findAllStudios(@Context UriInfo uriInfo) {
-        return Response.ok(studiosService.studiosEntityToStudiosResponseDTO(studiosService.findAllStudios(), uriInfo.getAbsolutePath().toString())).build();
+        return Response.ok(studiosService.toStudiosResponseDTO(studiosService.findAllStudios(), uriInfo.getAbsolutePath().toString())).build();
     }
 
     @Override

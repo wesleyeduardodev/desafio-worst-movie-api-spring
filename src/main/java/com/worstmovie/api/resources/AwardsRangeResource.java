@@ -15,13 +15,13 @@ public class AwardsRangeResource implements AwardsRangeResourceAPI {
 
     @Override
     @PermitAll
-    public Response findAwardsRangeProducer() {
-        return Response.ok(awardsRangeService.findAwardsRangeProducer(rankingService.findWorstMovieProducer())).build();
+    public Response findProducerAwardsRange() {
+        return Response.ok(awardsRangeService.findProducerAwardsRange(rankingService.findWorstMovieProducer())).build();
     }
 
     @Override
     @PermitAll
-    public Response findAwardsRangeStudios() {
-        return Response.ok(awardsRangeService.findAwardsRangeStudio(rankingService.findWorstMovieStudio())).build();
+    public Response findStudiosAwardsRange() {
+        return Response.ok(awardsRangeService.findStudioAwardsRange(rankingService.findWorstMovieStudio())).build();
     }
 }

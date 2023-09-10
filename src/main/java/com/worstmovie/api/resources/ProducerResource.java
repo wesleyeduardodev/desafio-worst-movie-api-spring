@@ -59,7 +59,7 @@ public class ProducerResource implements ProducerResourceAPI {
         Optional<Producer> producer = Producer.findByIdOptional(id);
         Response response;
         if (producer.isPresent()) {
-            producersService.updateProducers(id, producersRequestDTO);
+            producersService.updateProducer(id, producersRequestDTO);
             response = Response.ok().build();
         } else {
             response = ResponseMapperUtils.badRequest("01", "Producer not found");
@@ -74,7 +74,7 @@ public class ProducerResource implements ProducerResourceAPI {
         Optional<Producer> producer = Producer.findByIdOptional(id);
         Response response;
         if (producer.isPresent()) {
-            producersService.deleteProducers(producer.get().getId());
+            producersService.deleteProducer(producer.get().getId());
             response = ResponseMapperUtils.noContent();
         } else {
             response = ResponseMapperUtils.notFound();

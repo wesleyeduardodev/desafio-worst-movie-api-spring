@@ -11,7 +11,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirements;
-import org.eclipse.microprofile.openapi.annotations.tags.Tag;;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 @Path("/v1/awardsrange")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -23,7 +23,7 @@ public interface AwardsRangeResourceAPI {
     @Operation(
             description = "Essa rota serve para obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que\n" +
                     "obteve dois prêmios mais rápido.",
-            operationId = "awardsRangeResource.findAwardsRangeProducer",
+            operationId = "awardsRangeResource.findProducerAwardsRange",
             summary = "Obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que\n" +
                     "obteve dois prêmios mais rápido."
     )
@@ -43,12 +43,12 @@ public interface AwardsRangeResourceAPI {
     @APIResponse(responseCode = "401", ref = "unauthorized")
     @APIResponse(responseCode = "403", ref = "forbiden")
     @APIResponse(responseCode = "500", ref = "internalError")
-    Response findAwardsRangeProducer();
+    Response findProducerAwardsRange();
 
     @Operation(
             description = "Essa rota serve para obter o Studio com maior intervalo entre dois prêmios consecutivos, e o que\n" +
                     "obteve dois prêmios mais rápido.",
-            operationId = "awardsRangeResource.findAwardsRangeStudios",
+            operationId = "awardsRangeResource.findStudiosAwardsRange",
             summary = "Obter o Studio com maior intervalo entre dois prêmios consecutivos, e o que\n" +
                     "obteve dois prêmios mais rápido."
     )
@@ -68,5 +68,5 @@ public interface AwardsRangeResourceAPI {
     @APIResponse(responseCode = "401", ref = "unauthorized")
     @APIResponse(responseCode = "403", ref = "forbiden")
     @APIResponse(responseCode = "500", ref = "internalError")
-    Response findAwardsRangeStudios();
+    Response findStudiosAwardsRange();
 }

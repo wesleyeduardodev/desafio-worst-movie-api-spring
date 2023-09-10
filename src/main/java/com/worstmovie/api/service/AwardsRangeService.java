@@ -12,7 +12,7 @@ public class AwardsRangeService {
 
     private static final Integer RANGE_DELIMITER_AWARDS = 2;
 
-    public MaxMinProducersAwardsRangeResponseDTO findAwardsRangeProducer(List<RankingDTO> rankingProducers) {
+    public MaxMinProducersAwardsRangeResponseDTO findProducerAwardsRange(List<RankingDTO> rankingProducers) {
         List<RankingDTO> rankingProducersWithCalculatedPremiumRanges = returnRankingWithCalculatedPremiumRanges(rankingProducers);
         List<RankingDTO> minAwardsProducers = returnMinAwards(rankingProducersWithCalculatedPremiumRanges);
         List<RankingDTO> maxAwardsProducers = returnMaxAwards(rankingProducersWithCalculatedPremiumRanges);
@@ -23,7 +23,7 @@ public class AwardsRangeService {
                 .build();
     }
 
-    public MaxMinStudiosAwardsRangeResponseDTO findAwardsRangeStudio(List<RankingDTO> rankingStudios) {
+    public MaxMinStudiosAwardsRangeResponseDTO findStudioAwardsRange(List<RankingDTO> rankingStudios) {
         List<RankingDTO> rankingStudiosWithCalculatedPremiumRanges = returnRankingWithCalculatedPremiumRanges(rankingStudios);
         List<RankingDTO> minAwardsStudios = returnMinAwards(rankingStudiosWithCalculatedPremiumRanges);
         List<RankingDTO> maxAwardsStudios = returnMaxAwards(rankingStudiosWithCalculatedPremiumRanges);

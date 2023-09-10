@@ -13,7 +13,7 @@ public class CSVProcessor {
     public static final String CSV_DELIMITER = ";";
 
     @Inject
-    CSVMovieListImporterService csvDataImporterService;
+    CSVMovieListImporterService csvMovieListImporterService;
 
     public void processCSV(FileReader cvsFileReader) {
         try {
@@ -22,7 +22,7 @@ public class CSVProcessor {
                     .setDelimiter(CSV_DELIMITER)
                     .setSkipHeaderRecord(Boolean.TRUE)
                     .build();
-            csvDataImporterService.csvMovieListImporter(csvFormat.parse(cvsFileReader));
+            csvMovieListImporterService.csvMovieListImporter(csvFormat.parse(cvsFileReader));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

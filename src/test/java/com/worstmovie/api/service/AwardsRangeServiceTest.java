@@ -27,7 +27,7 @@ public class AwardsRangeServiceTest {
     @Test
     public void testRangeProducerFromMockRankingProducers() {
         List<RankingDTO> rankingDTOS = getRankingProducers();
-        MaxMinProducersAwardsRangeResponseDTO maxMinProducersAwardsRange = awardsRangeService.findAwardsRangeProducer(rankingDTOS);
+        MaxMinProducersAwardsRangeResponseDTO maxMinProducersAwardsRange = awardsRangeService.findProducerAwardsRange(rankingDTOS);
         List<ProducerAwardsRangeDTO> min = maxMinProducersAwardsRange.getMin().stream().sorted(Comparator.comparing(ProducerAwardsRangeDTO::getProducer)).collect(Collectors.toList());
         List<ProducerAwardsRangeDTO> max = maxMinProducersAwardsRange.getMax().stream().sorted(Comparator.comparing(ProducerAwardsRangeDTO::getProducer)).collect(Collectors.toList());
         assertEquals(min, maxMinProducersAwardsRangeMock.getMin());
@@ -37,7 +37,7 @@ public class AwardsRangeServiceTest {
     @Test
     public void testRangeStudiosFromMockRankingProducers() {
         List<RankingDTO> rankingDTOS = getRankingStudios();
-        MaxMinStudiosAwardsRangeResponseDTO maxMinStudiosAwardsRange = awardsRangeService.findAwardsRangeStudio(rankingDTOS);
+        MaxMinStudiosAwardsRangeResponseDTO maxMinStudiosAwardsRange = awardsRangeService.findStudioAwardsRange(rankingDTOS);
         List<StudioAwardsRangeDTO> min = maxMinStudiosAwardsRange.getMin().stream().sorted(Comparator.comparing(StudioAwardsRangeDTO::getStudio)).collect(Collectors.toList());
         List<StudioAwardsRangeDTO> max = maxMinStudiosAwardsRange.getMax().stream().sorted(Comparator.comparing(StudioAwardsRangeDTO::getStudio)).collect(Collectors.toList());
         assertEquals(min, maxMinStudiosAwardsRangeMock.getMin());

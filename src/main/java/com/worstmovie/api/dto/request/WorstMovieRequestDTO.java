@@ -12,7 +12,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(
-        description = "Object used to map the creation data of a new Worst Movie.",
+        description = "Object used to map Worst Movie creation data.",
         name = "WorstMovieRequestDTO",
         type = SchemaType.OBJECT
 )
@@ -20,7 +20,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 public class WorstMovieRequestDTO {
 
     @Schema(
-            description = "WorstMovie year.",
+            description = "Worst Movie year.",
             implementation = Integer.class,
             type = SchemaType.INTEGER
     )
@@ -28,7 +28,7 @@ public class WorstMovieRequestDTO {
     private String year;
 
     @Schema(
-            description = "WorstMovie title.",
+            description = "Worst Movie title.",
             implementation = String.class,
             type = SchemaType.STRING
     )
@@ -36,7 +36,7 @@ public class WorstMovieRequestDTO {
     private String title;
 
     @Schema(
-            description = "WorstMovie winner.",
+            description = "Worst Movie winner.",
             implementation = Boolean.class,
             type = SchemaType.BOOLEAN
     )

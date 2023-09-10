@@ -11,7 +11,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(
-        description = "Object used to map the creation data of a new producer.",
+        description = "Object used to map producer creation data.",
         name = "ProducerRequestDTO",
         type = SchemaType.OBJECT
 )

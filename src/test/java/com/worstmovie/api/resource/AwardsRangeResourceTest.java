@@ -47,7 +47,7 @@ public class AwardsRangeResourceTest {
     }
 
     @Test
-    public void testResponseFindAwardsRangeProducerFromCsvDataset() {
+    public void testResponseFindProducerAwardsRangeFromCsvDataset() {
         MaxMinProducersAwardsRangeResponseDTO maxMinProducersAwardsRange = given()
                 .when().get(PATH_AWARDSRANGE_PRODUCERS)
                 .then()

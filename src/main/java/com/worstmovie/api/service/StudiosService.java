@@ -43,31 +43,31 @@ public class StudiosService {
                 .builder()
                 .id(studio.getId())
                 .name(studio.getName())
-                .worstMovies(returnWorstMovieProducer(studio))
+                .worstMovies(returnWorstMovieStudio(studio))
                 .links(LinksUtils.generateLinks(path, null))
                 .build();
     }
 
-    public List<StudioResponseDTO> studiosEntityToStudiosResponseDTO(List<Studio> studios, String path) {
+    public List<StudioResponseDTO> toStudiosResponseDTO(List<Studio> studios, String path) {
         List<StudioResponseDTO> studioResponseDTOS = new ArrayList<>();
         studios.forEach(studio -> studioResponseDTOS.add(StudioResponseDTO.builder()
                 .id(studio.getId())
                 .name(studio.getName())
                 .links(LinksUtils.generateLinks(path, studio.getId()))
-                .worstMovies(returnWorstMovieProducer(studio))
+                .worstMovies(returnWorstMovieStudio(studio))
                 .build()));
         return studioResponseDTOS;
     }
 
-    private List<WorstMovieResponseDTO> returnWorstMovieProducer(Studio studio) {
+    private List<WorstMovieResponseDTO> returnWorstMovieStudio(Studio studio) {
         List<WorstMovieResponseDTO> worstMovies = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(studio.getWorstMovieStudios())) {
-            studio.getWorstMovieStudios().forEach(worstMovieProducer -> worstMovies.add(WorstMovieResponseDTO
+            studio.getWorstMovieStudios().forEach(worstMovieStudio -> worstMovies.add(WorstMovieResponseDTO
                     .builder()
-                    .id(worstMovieProducer.getId())
-                    .year(worstMovieProducer.getWorstMovie().getYear())
-                    .title(worstMovieProducer.getWorstMovie().getTitle())
-                    .winner(worstMovieProducer.getWorstMovie().isWinner())
+                    .id(worstMovieStudio.getId())
+                    .year(worstMovieStudio.getWorstMovie().getYear())
+                    .title(worstMovieStudio.getWorstMovie().getTitle())
+                    .winner(worstMovieStudio.getWorstMovie().isWinner())
                     .build()));
         }
         return worstMovies;

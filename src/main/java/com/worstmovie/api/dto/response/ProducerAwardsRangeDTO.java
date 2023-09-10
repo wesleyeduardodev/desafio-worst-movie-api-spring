@@ -26,13 +26,13 @@ public class ProducerAwardsRangeDTO {
     private String producer;
 
     @Schema(
+            description = "Award interval",
             implementation = Integer.class,
             type = SchemaType.INTEGER
     )
     private Integer interval;
 
     @Schema(
-            description = "Interval award.",
             implementation = Integer.class,
             type = SchemaType.INTEGER
     )

@@ -153,7 +153,7 @@ sobre indicados e vencedores do referido prêmio.
 - Para executar os testes via comando, abra o terminal do gitBash nas raiz do projeto execute o comando: **mvn clean install -DskipUnitTests**
 - O resultado pode ser verificado conforma imagem
 ![img_2.png](src/main/resources/readme/img_2-2092.png)
-- Os testes presentes no pacote security verificam se determiados endpoints estão acessíveis ou não dependendo da configuração de autenticaação repassada no teste da requisição.
+- Os testes presentes no pacote security verificam se determinados endpoints estão acessíveis ou não dependendo da configuração de autenticaação repassada no teste da requisição.
 
 
 # Observações Gerais Importantes

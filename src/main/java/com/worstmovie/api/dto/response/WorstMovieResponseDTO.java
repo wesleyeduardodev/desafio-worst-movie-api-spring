@@ -20,28 +20,28 @@ import java.util.List;
 public class WorstMovieResponseDTO {
 
     @Schema(
-            description = "WorstMovie code.",
+            description = "Worst Movie code.",
             implementation = Long.class,
             type = SchemaType.NUMBER
     )
     private Long id;
 
     @Schema(
-            description = "WorstMovie year.",
+            description = "Worst Movie year.",
             implementation = Integer.class,
             type = SchemaType.INTEGER
     )
     private String year;
 
     @Schema(
-            description = "WorstMovie title.",
+            description = "Worst Movie title.",
             implementation = String.class,
             type = SchemaType.STRING
     )
     private String title;
 
     @Schema(
-            description = "WorstMovie winner.",
+            description = "Worst Movie winner.",
             implementation = Boolean.class,
             type = SchemaType.BOOLEAN
     )

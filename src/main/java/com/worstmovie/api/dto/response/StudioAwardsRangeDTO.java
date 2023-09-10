@@ -32,7 +32,7 @@ public class StudioAwardsRangeDTO {
     private Integer interval;
 
     @Schema(
-            description = "Interval award.",
+            description = "Award Interval",
             implementation = Integer.class,
             type = SchemaType.INTEGER
     )

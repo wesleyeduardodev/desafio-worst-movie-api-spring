@@ -16,7 +16,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "API worst movie of the year",
+                title = "API worst movie of the year - Golden Raspberry Awards",
                 version = "1.0.0-SNAPSHOT",
                 description = "The API reads and stores data from a CSV file in the local H2 database. In one of its routes," +
                         "the producer returns with the longest gap between two consecutive awards, and the one\n" +
